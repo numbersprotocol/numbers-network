@@ -1,6 +1,7 @@
 # Numbers Network
 
 - [Numbers Network](#numbers-network)
+  - [Network Stack](#network-stack)
   - [Testnet: Snow (雪)](#testnet-snow-雪)
   - [Mainnet: Jade (玉)](#mainnet-jade-玉)
 - [Avalanche Subnets](#avalanche-subnets)
@@ -21,6 +22,10 @@
 - [Self-Hosted Faucet](#self-hosted-faucet)
   - [Wrapped NUM](#wrapped-num)
   - [Bridge](#bridge)
+
+## Network Stack
+
+![](https://bafkreigawrk2dszeuzhs5ehr6dsvv5sq7lwberkmx3jqmzkck3tqqw5x54.ipfs.dweb.link/)
 
 ## Testnet: Snow (雪)
 
