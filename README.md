@@ -93,6 +93,8 @@ References
 
 Create subnet by `subnet-cli`.
 1. `subnet-cli` uses the key specified in file `$PWD/.subnet-cli.pk` on the P-Chain to pay for the transaction fee.
+1. `subnet-cli` uses Fuji by default. To use mainnet, add `--public-uri https://api.avax.network` ([details](https://docs.avax.network/subnets/subnet-cli#network-selection)).
+1. [Avalanche transaction fee](https://docs.avax.network/quickstart/transaction-fees) lists the subnet action fees.
 
 <details>
 <summary>Command and result</summary>
