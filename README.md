@@ -17,6 +17,7 @@
   - [Precompile: Minting Native Coins](#precompile-minting-native-coins)
   - [Precompile: Configuring dynamic fees](#precompile-configuring-dynamic-fees)
   - [Admin](#admin)
+    - [Confirm Updated Node Is Working](#confirm-updated-node-is-working)
     - [Confirm Node Is Working](#confirm-node-is-working)
 - [HTTPS RPC Provider](#https-rpc-provider)
 - [Self-Hosted Faucet](#self-hosted-faucet)
@@ -452,6 +453,18 @@ Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#co
 ## Admin
 
 [avalanchego-api-scripts](https://github.com/numbersprotocol/avalanchego-api-scripts) is the admin toolkit.
+
+### Confirm Updated Node Is Working
+
+Node will show "consensus starting" for both C-Chain and P-Chain:
+
+```
+[10-02|06:32:32.114] INFO <C Chain> snowman/transitive.go:401 consensus starting {"lastAcceptedBlock": "2L56FDEYAemMKTJ2uD1MnGpC1pC2WBgeNtwyjh6AhgTffvCWR2"}
+[10-02|06:32:32.117] INFO <P Chain> snowman/transitive.go:401 consensus starting {"lastAcceptedBlock": "22egidV1exdWT8ckaAf8dv9YiWAs2ESmY2NmtJUwNqBGCyNef2"}
+[10-02|06:32:41.919] INFO <X Chain> avalanche/transitive.go:346 consensus starting {"lenFrontier": 1}
+```
+
+Now, you can check if the Node is running normally.
 
 ### Confirm Node Is Working
 
