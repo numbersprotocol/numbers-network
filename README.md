@@ -69,7 +69,42 @@ Environment
 
 ## Mainnet: Jade (玉)
 
-Stay tuned
+Add Network to MetaMask
+
+1. Network Name: Numbers Jade
+2. New RPC URL: https://mainnetrpc.num.network
+3. Chain ID: 10507
+4. Currency Symbol: NUM
+5. Block Explorer URL: https://mainnet.num.network
+
+```
+*-------------------------*----------------------------------------------------*
+| PRIMARY P-CHAIN ADDRESS | P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g      |
+*-------------------------*----------------------------------------------------*
+| TOTAL P-CHAIN BALANCE   | 6.9990000 $AVAX                                    |
+*-------------------------*----------------------------------------------------*
+| URI                     | https://api.avax.network                           |
+*-------------------------*----------------------------------------------------*
+| NETWORK NAME            | mainnet                                            |
+*-------------------------*----------------------------------------------------*
+| SUBNET VALIDATORS       | [BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx]                |
+*-------------------------*----------------------------------------------------*
+| SUBNET ID               | 2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ |
+*-------------------------*----------------------------------------------------*
+| BLOCKCHAIN ID           | 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE |
+*-------------------------*----------------------------------------------------*
+| CHAIN NAME              | numbersevm                                         |
+*-------------------------*----------------------------------------------------*
+| VM ID                   | qeX7kcVMMkVLB9ZJKTpvtSjpLbtYooNEdpFzFShwRTFu76qdx  |
+*-------------------------*----------------------------------------------------*
+| VM GENESIS PATH         | ./genesis.json                                     |
+*-------------------------*----------------------------------------------------*
+```
+
+Environment
+
+1. avalanchego: 1.9.0
+2. subnet-evm: 0.4.0
 
 # Avalanche Subnets
 
