@@ -64,7 +64,7 @@ Add Network to MetaMask
 
 Environment
 
-1. avalanchego: 1.8.4
+1. avalanchego: 1.9.0
 2. subnet-evm: 0.3.0
 
 ## Mainnet: Jade (玉)
