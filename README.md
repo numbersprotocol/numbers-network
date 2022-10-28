@@ -16,6 +16,7 @@
   - [Customize Subnet and EVM](#customize-subnet-and-evm)
   - [Precompile: Minting Native Coins](#precompile-minting-native-coins)
   - [Precompile: Configuring dynamic fees](#precompile-configuring-dynamic-fees)
+  - [Precompile: Restricting Smart Contract Deployers](#precompile-restricting-smart-contract-deployers)
   - [Admin](#admin)
     - [Confirm Updated Node Is Working](#confirm-updated-node-is-working)
     - [Confirm Node Is Working](#confirm-node-is-working)
@@ -487,10 +488,10 @@ Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#mi
 
 Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#configuring-dynamic-fees) for the details.
 
-# Precompile: Configuring dynamic fees
+## Precompile: Restricting Smart Contract Deployers
 
 ```
-> contract = await ethers.getContractAt("AllowList", "0x0200000000000000000000000000000000000000")
+> contract = await ethers.getContractAt("IAllowList", "0x0200000000000000000000000000000000000000")
 
 > [admin, test] = await ethers.getSigners()
 
