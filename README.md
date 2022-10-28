@@ -31,7 +31,7 @@
 
 ## Testnet: Snow (雪)
 
-Add Network to MetaMask
+Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10508)
 
 1. Network Name: Numbers Snow
 2. New RPC URL: https://testnetrpc.num.network
@@ -70,7 +70,7 @@ Environment
 
 ## Mainnet: Jade (玉)
 
-Add Network to MetaMask
+Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10507)
 
 1. Network Name: Numbers Jade
 2. New RPC URL: https://mainnetrpc.num.network
