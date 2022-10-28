@@ -487,6 +487,50 @@ Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#mi
 
 Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#configuring-dynamic-fees) for the details.
 
+# Precompile: Configuring dynamic fees
+
+```
+> contract = await ethers.getContractAt("AllowList", "0x0200000000000000000000000000000000000000")
+
+> [admin, test] = await ethers.getSigners()
+
+# 0: None, 1: Enabled, 2: Admin
+> await contract.readAllowList(admin.address)
+BigNumber { value: "2" }
+
+> await contract.readAllowList(test.address)
+BigNumber { value: "0" }
+
+> await contract.setEnabled(test.address)
+{
+  hash: '0xd117e990e85c2428a620f9bd834b0597db1648f3d2fa5899d929fd1701d46e01',
+  type: 0,
+  accessList: null,
+  blockHash: '0xf6063f0c5e86ab4efaf970e901ca3f5be3335ec61ab8f50fc075a6915f5e19e5',
+  blockNumber: 5,
+  transactionIndex: 0,
+  confirmations: 1,
+  from: '0x8Cba0477d89394E6d8aD658E11d52113A2DA4Ab2',
+  gasPrice: BigNumber { value: "100000000000" },
+  gasLimit: BigNumber { value: "41432" },
+  to: '0x0200000000000000000000000000000000000000',
+  value: BigNumber { value: "0" },
+  nonce: 2,
+  data: '0x0aaf704300000000000000000000000063b7076fc0a914af543c2e5c201df6c29fcc18c5',
+  r: '0x01e0c663a55757e12237f001811cab7a610c3ebfeba99ac9f0e29cbe4f4bd5ed',
+  s: '0x38b126e31bb8ee608e45554956c9a6eefb091961755283f9dff69964c2512f41',
+  v: 21049,
+  creates: null,
+  chainId: 10507,
+  wait: [Function (anonymous)]
+}
+
+> await contract.readAllowList(test.address)
+BigNumber { value: "1" }
+```
+
+Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#restricting-smart-contract-deployers) for the details.
+
 ## Admin
 
 [avalanchego-api-scripts](https://github.com/numbersprotocol/avalanchego-api-scripts) is the admin toolkit.
