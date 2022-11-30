@@ -9,6 +9,7 @@
   - [Launch Node (avalanchego)](#launch-node-avalanchego)
   - [Create a Subnet](#create-a-subnet)
   - [Add Validator to Subnet](#add-validator-to-subnet)
+  - [Renew Validator](#renew-validator)
   - [RPC](#rpc)
   - [Upgrade Node (avalanchego)](#upgrade-node-avalanchego)
   - [Update subnet-evm](#update-subnet-evm)
@@ -341,6 +342,8 @@ High-level concepts
 
     1. `subnet-cli` will find private key from `$PWD/.subnet-cli.pk` by default.
     1. The wallet needs to have 0.001 AVAX at least on P-Chain (Fuji).
+
+## Renew Validator
 
 If the validator's staking duration is expired, you can follow the same steps above to add it as a validator again.
 
