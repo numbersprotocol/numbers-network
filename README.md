@@ -332,6 +332,7 @@ High-level concepts
 1. Add the validator to the subnet
     1. Ues subnet admin to run `subnet-cli`. Find the Subnet admin in the Subnets section below.
         1. In general, you will run `subnet-cli` on your notebook instead of validator nodes.
+        1. You can use [`avalanchego-api-scripts/subnet-cli/install-subnet-cli.sh`](https://github.com/numbersprotocol/avalanchego-api-scripts/blob/main/subnet-cli/install-subnet-cli.sh) to install.
     1. Run the command
 
         ```shell
@@ -346,6 +347,10 @@ High-level concepts
 ## Renew Validator
 
 If the validator's staking duration is expired, you can follow the same steps above to add it as a validator again.
+
+Before validation staking expires, any wallet can not stake to a validator again. If you try to do so on wallet.avax.network, you will get the error message
+
+> couldn't issue tx: attempted to issue duplicate validation for NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p
 
 ## RPC
 
