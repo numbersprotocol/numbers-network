@@ -23,8 +23,8 @@
     - [Confirm Node Is Working](#confirm-node-is-working)
 - [HTTPS RPC Provider](#https-rpc-provider)
 - [Self-Hosted Faucet](#self-hosted-faucet)
-  - [Wrapped NUM](#wrapped-num)
-  - [Bridge](#bridge)
+- [Wrapped NUM](#wrapped-num)
+- [Bridge](#bridge)
 
 ## Network Stack
 
@@ -611,20 +611,16 @@ https://faucet.num.network
     $ sudo service nginx configtest
     $ sudo service nginx reload
     ```
-## Wrapped NUM
+# Wrapped NUM
 
-Refer to [canonical-wnum](https://github.com/numbersprotocol/canonical-wnum/).
+We completed a technical survey and verified some concepts on the testnet.
 
-## Bridge
+If you are interested in wrapped ERC20 token, refer to [canonical-wnum](https://github.com/numbersprotocol/canonical-wnum/).
 
-ChainBridge
+# Bridge
 
-1. [chainbridge-deploy](https://github.com/ChainSafe/chainbridge-deploy) v1.0.0
-    1. Generate contract deployer `cb-sol-cli`
-1. [chainbridge](https://github.com/ChainSafe/chainbridge) v1.1.1
-    1. Generate relayer `chainbridge`
+To bridge native NUM to ERC20/BEP20 NUM, you can use [XY Finance](https://app.xy.finance/) ([audit report](https://docs.xy.finance/getting-started/security)).
 
-References
+<img src="https://user-images.githubusercontent.com/292790/208720428-ab794a2a-ab4d-406e-a51c-63e6ef01a5d4.png" width="50%">
 
-1. https://docs.avax.network/subnets/deploying-cross-chain-evm-bridge
-1. https://chainbridge.chainsafe.io/live-evm-bridge/#and-back-again
+To know more about NUM token, you can visit the [NUM token website](https://num.numbersprotocol.io/).
