@@ -575,7 +575,98 @@ $ watch -n 5 ./info.isBootstrapped.sh 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF
 $ watch -n 5 ./health.health.sh
 
 # Show validators by giving the Subnet ID
-$ ./platform.getCurrentValidators.sh 81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe
+$ ./platform.getCurrentValidators.sh 81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe | jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1318  100  1139  100   179  21189   3330 --:--:-- --:--:-- --:--:-- 24867
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "validators": [
+      {
+        "txID": "QWwjVDJTX2pSYxi5oNk51VeZaZPip9jZnSVhLqipgKMRJDxFP",
+        "startTime": "1662288001",
+        "endTime": "1677599993",
+        "stakeAmount": "1000",
+        "nodeID": "NodeID-7TwAjiRpTbNcqUx6F9EoyXRBLAfeoQXRq",
+        "connected": true,
+        "uptime": "1.0000"
+      },
+      {
+        "txID": "2cfHmfw29UBCjMDTRb9RwistPFekmHzEdfpNci1TLLeoMdtckZ",
+        "startTime": "1662363248",
+        "endTime": "1680278397",
+        "stakeAmount": "1000",
+        "nodeID": "NodeID-JbeonHKqomERomXgCiXr9oC9vfynkBupj",
+        "connected": true,
+        "uptime": "1.0000"
+      },
+      {
+        "txID": "2PqA6BE5wiA5iE9yZeMsfaSag4pT5U1uxMMGyia1HCF6SEUNRe",
+        "startTime": "1662364392",
+        "endTime": "1682870344",
+        "stakeAmount": "1000",
+        "nodeID": "NodeID-BffXkmzM8EwrBZgpqFp9pwgE9DbDgYKG2",
+        "connected": true,
+        "uptime": "1.0000"
+      },
+      {
+        "txID": "26mBFfgiFTz3eFo1QAmvMiBpfTtmgMvzPJ2eB5V6WjK2CkTcuJ",
+        "startTime": "1667294891",
+        "endTime": "1685548750",
+        "stakeAmount": "1000",
+        "nodeID": "NodeID-24WK7qiKXAumya1kKEktwj2ubBbRyq5UW",
+        "connected": true,
+        "uptime": "1.0000"
+      },
+      {
+        "txID": "kApLebvYz54fRratWmWqEttbNktbCDQMK93mDmr1rm9w64gDU",
+        "startTime": "1669827497",
+        "endTime": "1688140751",
+        "stakeAmount": "1000",
+        "nodeID": "NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p",
+        "connected": true,
+        "uptime": "1.0000"
+      }
+    ]
+  },
+  "id": 1
+}
+```
+
+Remember to add `--public-ip=<public-ip>` when running `avalanchego`. Check public IPs are correct and uptimes are > 98
+
+```
+$ ./info.peers.sh  | jq .
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2027  100  1661  100   366   435k  98255 --:--:-- --:--:-- --:--:--  659k
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "numPeers": "4",
+    "peers": [
+      ...
+      {
+        "ip": "<private-or-public-ip-and-port>",
+        "publicIP": "private-ip-and-port",
+        "nodeID": "NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p",
+        "version": "avalanche/1.9.4",
+        "lastSent": "2023-01-27T17:03:56Z",
+        "lastReceived": "2023-01-27T17:03:52Z",
+        "observedUptime": "99",
+        "observedSubnetUptimes": {
+          "81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe": "99"
+        },
+        "trackedSubnets": [
+          "81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"
+        ],
+        "benched": []
+      }
+    ]
+  },
+  "id": 1
+}
 ```
 
 # HTTPS RPC Provider
