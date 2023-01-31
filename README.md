@@ -332,13 +332,20 @@ High-level concepts
 1. Add the validator to the subnet
     1. Ues subnet admin to run `subnet-cli`. Find the Subnet admin in the Subnets section below.
         1. In general, you will run `subnet-cli` on your notebook instead of validator nodes.
-        1. You can use [`avalanchego-api-scripts/subnet-cli/install-subnet-cli.sh`](https://github.com/numbersprotocol/avalanchego-api-scripts/blob/main/subnet-cli/install-subnet-cli.sh) to install.
+        1. You can use [`avalanchego-api-scripts/subnet-cli/install-subnet-cli-testnet.sh`](https://github.com/numbersprotocol/avalanchego-api-scripts/blob/main/subnet-cli/subnet-cli-add-subnet-validator-testnet.sh) to install.
     1. Run the command
 
         ```shell
+        # testnet
         subnet-cli add subnet-validator \
-            --node-ids="NodeID-8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF" \
-            --subnet-id="2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG"
+            --node-ids="NodeID-7TwAjiRpTbNcqUx6F9EoyXRBLAfeoQXRq" \
+            --subnet-id="81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"
+
+        # mainnet
+        subnet-cli add subnet-validator \
+            --node-ids="NodeID-BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx" \
+            --subnet-id="2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ" \
+            --public-uri "https://api.avax.network"
         ```
 
     1. `subnet-cli` will find private key from `$PWD/.subnet-cli.pk` by default.
@@ -346,7 +353,7 @@ High-level concepts
 
 ## Renew Validator
 
-If the validator's staking duration is expired, you can follow the same steps above to add it as a validator again.
+If the validator's staking duration is expired, the staking amount and rewards will be sent to the staking wallet on P-Chain automatically. You can follow the same steps above to add it as a validator again.
 
 Before validation staking expires, any wallet can not stake to a validator again. If you try to do so on wallet.avax.network, you will get the error message
 
@@ -382,22 +389,25 @@ Notes
     > [jpop32 — 05/12/2021](https://discord.com/channels/578992315641626624/757576823570825316/841775940706762762)
     > Plugin is the part of the installation. And it has to be upgraded along with the main executable, yes.
 
+Since `avalanchego v1.9.6`, there are two breaking changes
+
+1. There is no `avalanchego/plugins/evm` (Subnet EVM) because it has been merged into `avalanchego` directly.
+1. The default plugins directory is `~/.avalanchego/plugins/`
+
 ```
-$ tree avalanchego-v1.7.14
-avalanchego-v1.7.14
-├── avalanchego
-└── plugins
-    ├── evm
-    └── kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT
+$ tree avalanchego-v1.9.6
+avalanchego-v1.9.6
+└── avalanchego
 
-1 directory, 3 files
-
+$ tree ~/.avalanchego/plugins/
+/home/<account>/.avalanchego/plugins/
+└── kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT
 ```
 
 ## Update subnet-evm
 
 1. Download the latest pre-built binary on [subnet-evm GitHub](https://github.com/ava-labs/subnet-evm).
-1. Copy the subnet-evm binary to `<avalanchego>/plugins/<vmID>`
+1. Copy the subnet-evm binary to `~/.avalanchego/plugins/<vmID>`
 1. Restart node (`avalanchego`)
 
 ## Network Upgrades: Enable/Disable Precompiles
