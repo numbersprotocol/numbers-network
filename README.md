@@ -105,8 +105,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.9.7](https://app.asana.com/0/1200906800350668/1203856372179989)
-2. subnet-evm: v0.4.8
+1. avalanchego: [v1.9.15](https://app.asana.com/0/1202305127727547/1204256884439163/f)
+2. subnet-evm: v0.4.12
 
 # Avalanche Subnets
 
