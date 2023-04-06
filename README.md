@@ -66,8 +66,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.9.7](https://app.asana.com/0/1200906800350668/1203846764963299)
-2. subnet-evm: v0.4.8
+1. avalanchego: [v1.10.0-fuji](https://app.asana.com/0/1202305127727547/1204344913984316/f)
+2. subnet-evm: v0.5.0-fuji-1
 
 ## Mainnet: Jade (玉)
 
@@ -644,7 +644,7 @@ $ ./platform.getCurrentValidators.sh 81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgC
 }
 ```
 
-Remember to add `--public-ip=<public-ip>` when running `avalanchego`. Check public IPs are correct and uptimes are > 98
+Using `info.peers` to check all the nodes and versions in a subnet. The nodes might not be validators. The node running the command will not be listed in the result. Remember to add `--public-ip=<public-ip>` when running `avalanchego`. Check public IPs are correct and uptimes are > 98.
 
 ```
 $ ./info.peers.sh  | jq .
