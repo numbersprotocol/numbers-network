@@ -11,6 +11,7 @@
   - [Add Validator to Subnet](#add-validator-to-subnet)
   - [Renew Validator](#renew-validator)
   - [RPC](#rpc)
+    - [Set RPC](#set-rpc)
   - [Upgrade Node (avalanchego)](#upgrade-node-avalanchego)
   - [Update subnet-evm](#update-subnet-evm)
   - [Network Upgrades: Enable/Disable Precompiles](#network-upgrades-enabledisable-precompiles)
@@ -25,6 +26,7 @@
 - [Self-Hosted Faucet](#self-hosted-faucet)
 - [Wrapped NUM](#wrapped-num)
 - [Bridge](#bridge)
+- [Archieve Node](#archieve-node)
 
 ## Network Stack
 
@@ -364,6 +366,14 @@ Validator version distributions: [mainnet](https://explorer-xp.avax.network/vali
 ## RPC
 
 [MetaMask RPC rule](https://docs.avax.network/subnets/deploy-a-smart-contract-on-your-evm#step-1-setting-up-metamask): `http://NodeIPAddress:9650/ext/bc/BlockchainID/rpc`
+
+### Set RPC
+
+Use Nginx as RPC load balancer.
+
+```sh
+$ vim /etc/nginx/sites-available/default
+```
 
 ## Upgrade Node (avalanchego)
 
@@ -725,3 +735,47 @@ To bridge native NUM to ERC20/BEP20 NUM, you can use [XY Finance](https://app.xy
 <img src="https://user-images.githubusercontent.com/292790/208720428-ab794a2a-ab4d-406e-a51c-63e6ef01a5d4.png" width="50%">
 
 To know more about NUM token, you can visit the [NUM token website](https://num.numbersprotocol.io/).
+
+# Archieve Node
+
+[Running an Archival Node](https://docs.avax.network/dapps/launch-your-ethereum-dapp#running-an-archival-node)
+* [state sync bootstrapping has to be off](https://docs.avax.network/nodes/build/set-up-node-with-installer#running-the-script).
+* [~2TB storage size for archive node](https://support.avax.network/en/articles/6158842-nodes-faq)
+
+Instance
+1. Create an instance from full node image
+1. Increase disk space to 2TB
+1. Create a new wallet
+1. Delete `~/.avalanchego/staking/*`
+1. Update `~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json`
+
+```sh
+# filepath: ~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json
+
+{
+    "feeRecipient": "0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481",
+    "pruning-enabled": false,
+    # newly added content
+    "eth-apis": [
+        "eth",
+        "eth-filter",
+        "net",
+        "web3",
+        "internal-eth",
+        "internal-blockchain",
+        "internal-transaction",
+        "debug-tracer"
+    ]
+}
+```
+
+Testing command
+
+```sh
+$ curl http://10.128.0.10:9650/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc \
+     -X POST \
+     -H "Content-Type: application/json" \
+    --data '{"method":"debug_traceTransaction","params":["0x7d2dec6c3e7ce2a387d988a0603ce7de6d487d6aeaf6b58eabdb123161cee0a2"],"id":1,"jsonrpc":"2.0"}'
+```
+
+[Discord discussion](https://discord.com/channels/578992315641626624/905684871731634196/1026850988042244247)
