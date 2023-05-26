@@ -42,6 +42,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 3. Chain ID: 10508
 4. Currency Symbol: NUM
 5. Block Explorer URL: https://testnet.num.network
+6. Websocket RPC URL: wss://testnetrpc.num.network/ws
 
 ```
 *-------------------------*-----------------------------------------------------------------------*
@@ -81,6 +82,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 3. Chain ID: 10507
 4. Currency Symbol: NUM
 5. Block Explorer URL: https://mainnet.num.network
+6. Websocket RPC URL: wss://mainnetrpc.num.network/ws
 
 ```
 *-------------------------*----------------------------------------------------*
@@ -712,7 +714,7 @@ from websockets import connect
 
 
 async def get_event():
-    async with connect('ws://testnetrpc.num.network/ws') as ws:
+    async with connect('wss://testnetrpc.num.network/ws') as ws:
         await ws.send('{"id": 1, "method": "eth_subscribe", "params": ["logs", {"topics": []}]}')
         subscription_response = await ws.recv()
         print(subscription_response)
