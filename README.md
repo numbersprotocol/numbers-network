@@ -12,6 +12,7 @@
   - [Renew Validator](#renew-validator)
   - [RPC](#rpc)
     - [Set RPC](#set-rpc)
+    - [Test RPC](#test-rpc)
   - [Upgrade Node (avalanchego)](#upgrade-node-avalanchego)
   - [Update subnet-evm](#update-subnet-evm)
   - [Network Upgrades: Enable/Disable Precompiles](#network-upgrades-enabledisable-precompiles)
@@ -376,6 +377,28 @@ Use Nginx as RPC load balancer.
 
 ```sh
 $ vim /etc/nginx/sites-available/default
+```
+
+### Test RPC
+
+Test POST on the RPC node locally:
+
+```sh
+$ cat check_version.sh
+#!/bin/bash
+
+curl -X POST --data '{
+    "jsonrpc": "2.0",
+    "id": 10508,
+    "method": "eth_chainId"
+}' -H "Content-Type: application/json" http://localhost
+```
+
+Testing result:
+
+```sh
+$ ./check_version.sh
+{"jsonrpc":"2.0","id":10508,"result":"0x290c"}
 ```
 
 ## Upgrade Node (avalanchego)
@@ -779,14 +802,15 @@ To know more about NUM token, you can visit the [NUM token website](https://num.
 
 # Archieve Node
 
+Archive Node provides full history of the blockchain and does not need to be a validator.
+
 [Running an Archival Node](https://docs.avax.network/dapps/launch-your-ethereum-dapp#running-an-archival-node)
 * [state sync bootstrapping has to be off](https://docs.avax.network/nodes/build/set-up-node-with-installer#running-the-script).
 * [~2TB storage size for archive node](https://support.avax.network/en/articles/6158842-nodes-faq)
 
-Instance
+Make a Full Node instance to be an Archive Node instance:
 1. Create an instance from full node image
 1. Increase disk space to 2TB
-1. Create a new wallet
 1. Delete `~/.avalanchego/staking/*`
 1. Update `~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json`
 
@@ -813,7 +837,7 @@ Instance
 Testing command
 
 ```sh
-$ curl http://10.128.0.10:9650/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc \
+$ curl http://<local-ip>:9650/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc \
      -X POST \
      -H "Content-Type: application/json" \
     --data '{"method":"debug_traceTransaction","params":["0x7d2dec6c3e7ce2a387d988a0603ce7de6d487d6aeaf6b58eabdb123161cee0a2"],"id":1,"jsonrpc":"2.0"}'
