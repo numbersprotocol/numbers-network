@@ -23,6 +23,7 @@
     - [Confirm Updated Node Is Working](#confirm-updated-node-is-working)
     - [Confirm Node Is Working](#confirm-node-is-working)
 - [HTTPS RPC Provider](#https-rpc-provider)
+- [Websocket RPC Provider](#websocket-rpc-provider)
 - [Self-Hosted Faucet](#self-hosted-faucet)
 - [Wrapped NUM](#wrapped-num)
 - [Bridge](#bridge)
@@ -692,6 +693,44 @@ $ ./info.peers.sh  | jq .
 # HTTPS RPC Provider
 
 Concept: Nginx with Certbot as reverse proxy redirects RPC requests to the validators.
+
+# Websocket RPC Provider
+
+Concept: Nginx with Certbot as reverse proxy redirects RPC requests to the websocket endpoint of validators.
+
+Websocket log subscription example using Python:
+
+```sh
+pip3 install websockets
+```
+
+```python
+import asyncio
+import json
+
+from websockets import connect
+
+
+async def get_event():
+    async with connect('ws://testnetrpc.num.network/ws') as ws:
+        await ws.send('{"id": 1, "method": "eth_subscribe", "params": ["logs", {"topics": []}]}')
+        subscription_response = await ws.recv()
+        print(subscription_response)
+        while True:
+            try:
+                message = await asyncio.wait_for(ws.recv(), timeout=60)
+                print(json.loads(message))
+            except asyncio.TimeoutError:
+                pass
+            except Exception as e:
+                print(f'Error: {e}')
+                break
+
+
+if __name__ == '__main__':
+    asyncio.run(get_event())
+
+```
 
 # Self-Hosted Faucet
 
