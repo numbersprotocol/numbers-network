@@ -321,10 +321,18 @@ waiting for validator 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to start validating GBEw
 ```
 </details>
 
-Launch validator. When running `avalanchego`, adding `—http-host=0.0.0.0` so that MetaMask can access the RPC URL.
+Launch validator. When running `avalanchego`, add
 
-```
-./avalanchego --whitelisted-subnets=2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG --network-id=fuji --http-host=0.0.0.0
+* `-—http-host=0.0.0.0`: Make MetaMask can access the RPC URL
+* `--http-allowed-hosts="*"`: Allow traffic from the RPC node (since v1.10.3)
+
+```sh
+./avalanchego \
+    --track-subnets=81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe\
+    --network-id=fuji \
+    --http-host=0.0.0.0 \
+    --http-allowed-hosts="*" \
+    --public-ip=<node-public-ip>
 ```
 
 ## Add Validator to Subnet
