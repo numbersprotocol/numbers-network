@@ -120,6 +120,7 @@ Environment
 
 1. Avalanche's high-level components: Avalanche -> Subnets -> Chains -> VMs
 2. Every subnet / chain / vm has an unique ID.
+3. Blackhole: `0x0100000000000000000000000000000000000000`, it is unchangeable.
 
 ## Launch Node (avalanchego)
 
