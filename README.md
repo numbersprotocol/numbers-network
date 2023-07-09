@@ -18,6 +18,7 @@
   - [Network Upgrades: Enable/Disable Precompiles](#network-upgrades-enabledisable-precompiles)
   - [Customize Subnet and EVM](#customize-subnet-and-evm)
   - [Precompile: Minting Native Coins](#precompile-minting-native-coins)
+    - [Check Minting Amount](#check-minting-amount)
   - [Precompile: Configuring dynamic fees](#precompile-configuring-dynamic-fees)
   - [Precompile: Restricting Smart Contract Deployers](#precompile-restricting-smart-contract-deployers)
   - [Admin](#admin)
@@ -502,6 +503,26 @@ BigNumber { value: "99999999999793712000000400" }
 ```
 
 Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#minting-native-coins) for the details.
+
+### Check Minting Amount
+
+[Example Tx](https://mainnet.num.network/transaction/0xc20e2e32396b3555140f4cc2dfacf50cc334b6d49ded042c5a137ab31442b317)
+
+data
+
+```
+0x4f5aaaba0000000000000000000000008cba0477d89394e6d8ad658e11d52113a2da4ab20000000000000000000000000000000000000000001acff4350c4a1576280000
+```
+
+decode
+
+```
+Signature (Method ID): 0x4f5aaaba
+[0]: 0000000000000000000000008cba0477d89394e6d8ad658e11d52113a2da4ab2
+[1]: 0000000000000000000000000000000000000000001acff4350c4a1576280000
+```
+
+[decode [1]](https://www.binaryhexconverter.com/hex-to-decimal-converter), the result is `32414106000000000000000000` (32,414,106 in Wei).
 
 ## Precompile: Configuring dynamic fees
 
