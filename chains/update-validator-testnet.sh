@@ -40,6 +40,7 @@ show_configs() {
     echo "AVALANCHEGO_VERSION: ${AVALANCHEGO_VERSION}"
     echo "SUBNET_EVM_VERSION: ${SUBNET_EVM_VERSION}"
     echo "VM_ID (Testnet): ${VM_ID}"
+    echo "SUBNET_ID (Testnet): ${SUBNET_ID}"
 }
 
 show_next_action_reminder() {
