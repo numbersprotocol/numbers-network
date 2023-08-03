@@ -72,8 +72,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.10.4](https://app.asana.com/0/1202305127727547/1205069532064569/f)
-2. subnet-evm: v0.5.1
+1. avalanchego: [v1.10.7](https://app.asana.com/0/1201123720388006/1205121613915222/f)
+2. subnet-evm: v0.5.3
 
 ## Mainnet: Jade (玉)
 
@@ -112,8 +112,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.10.4](https://app.asana.com/0/1202305127727547/1205070022460093/f)
-2. subnet-evm: v0.5.1
+1. avalanchego: [v1.10.7](https://app.asana.com/0/1201123720388006/1205121724946598/f)
+2. subnet-evm: v0.5.3
 
 # Avalanche Subnets
 
@@ -376,6 +376,8 @@ Before validation staking expires, any wallet can not stake to a validator again
 > couldn't issue tx: attempted to issue duplicate validation for NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p
 
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
+
+[Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
 
 ## RPC
 
