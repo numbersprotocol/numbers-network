@@ -51,6 +51,7 @@ show_next_action_reminder() {
     echo "Check validators"
     echo "$ cd ~/avalanchego-api-scripts/api"
     echo "$ ./platform.getCurrentValidators.sh ${SUBNET_ID} | jq ."
+    echo "$ ./info.peers.sh  | jq ."
 }
 
 main() {
