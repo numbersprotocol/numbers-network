@@ -770,7 +770,7 @@ from websockets import connect
 
 async def get_event():
     async with connect('wss://testnetrpc.num.network/ws') as ws:
-        await ws.send('{"id": 1, "method": "eth_subscribe", "params": ["logs", {"topics": []}]}')
+        await ws.send('{"jsonrpc":"2.0", "id": 1, "method": "eth_subscribe", "params": ["logs", {"topics": []}]}')
         subscription_response = await ws.recv()
         print(subscription_response)
         while True:
