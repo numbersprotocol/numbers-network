@@ -627,6 +627,8 @@ Deployers
     1. [`0x0132613b3A1061816F4661Ad301612910E3Cce0B`](https://mainnet.num.network/tx/0x2e75136ec2a37ec64fd9bbf2ddd11e30a36019489a0ed6b881330cb481d75cb2)
 1. DAO Maker
     1. [`0xf8f26151c9f445407eeA10E5DcA1C7e12a6194eE`](https://mainnet.num.network/tx/0xa6052c051e00566fe7e8bbe61b9f49e37bde9a84c95d5bc477eef26fb91a5c8b)
+1. NFTIV
+    1. [`0x69bE6d143A291deBd6b7c51eD50CE7E25Fc74ee9`](https://mainnet.num.network/tx/0x857867c861ad0d39131fd33f206126dc553118a17d9efb1e5c6640ccbeeb76a0)
 
 ## Admin
 
