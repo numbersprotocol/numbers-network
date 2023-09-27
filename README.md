@@ -846,35 +846,79 @@ Make a Full Node instance to be an Archive Node instance:
 1. Create an instance from full node image
 1. Increase disk space to 2TB
 1. Delete `~/.avalanchego/staking/*`
-1. Update `~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json`
+1. Update network config
+    * mainnet: `~/.avalanchego/configs/chains/2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/config.json`
+    * testnet: `~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json`
 
-```sh
-# filepath: ~/.avalanchego/configs/chains/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/config.json
+    ```sh
+    {
+        "pruning-enabled": false,
+        # newly added content
+        "eth-apis": [
+            "eth",
+            "eth-filter",
+            "net",
+            "web3",
+            "internal-eth",
+            "internal-blockchain",
+            "internal-transaction",
+            "debug-tracer"
+        ]
+    }
+    ```
 
-{
-    "feeRecipient": "0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481",
-    "pruning-enabled": false,
-    # newly added content
-    "eth-apis": [
-        "eth",
-        "eth-filter",
-        "net",
-        "web3",
-        "internal-eth",
-        "internal-blockchain",
-        "internal-transaction",
-        "debug-tracer"
-    ]
-}
-```
+1. Run an Archive Node by `avalanchego`
 
-Testing command
+    Run an archive node for mainnet
 
-```sh
-$ curl http://<local-ip>:9650/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc \
-     -X POST \
-     -H "Content-Type: application/json" \
-    --data '{"method":"debug_traceTransaction","params":["0x7d2dec6c3e7ce2a387d988a0603ce7de6d487d6aeaf6b58eabdb123161cee0a2"],"id":1,"jsonrpc":"2.0"}'
-```
+    ```sh
+    #!/bin/sh
 
-[Discord discussion](https://discord.com/channels/578992315641626624/905684871731634196/1026850988042244247)
+    # Subnet IDs
+    SUBNET_MAINNET="2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ"
+
+    ./avalanchego \
+        --track-subnets=${SUBNET_MAINNET} \
+        --http-host=0.0.0.0 \
+        --public-ip=<node-public-ip> \
+        --http-allowed-hosts="*"
+    ```
+
+    Run an archive node for testnet
+
+    ```sh
+    #!/bin/sh
+
+    # Subnet IDs
+    SUBNET_MAINNET="81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"
+
+    ./avalanchego \
+        --track-subnets=${SUBNET_MAINNET} \
+        --http-host=0.0.0.0 \
+        --public-ip=<node-public-ip> \
+        --http-allowed-hosts="*"
+    ```
+
+1. (optional) Test an Archive Node
+
+    Run the commands on the Archive Node's instances for testing it's working as Archive Node.
+
+    For mainnet
+
+    ```sh
+    $ curl http://localhost:9650/ext/bc/2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/rpc \
+         -X POST \
+         -H "Content-Type: application/json" \
+        --data '{"method":"debug_traceTransaction","params":["0x9a241e580d29d90d890316559d055c0df5cc7203be43b166d63c51de2218efc8"],"id":1,"jsonrpc":"2.0"}'
+    ```
+
+    For testnet
+
+    ```sh
+    $ curl http://localhost:9650/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc \
+         -X POST \
+         -H "Content-Type: application/json" \
+        --data '{"method":"debug_traceTransaction","params":["0x7d2dec6c3e7ce2a387d988a0603ce7de6d487d6aeaf6b58eabdb123161cee0a2"],"id":1,"jsonrpc":"2.0"}'
+    ```
+
+    [Discord discussion](https://discord.com/channels/578992315641626624/905684871731634196/1026850988042244247)
