@@ -15,6 +15,7 @@
     - [Test RPC](#test-rpc)
   - [Upgrade Node (avalanchego)](#upgrade-node-avalanchego)
   - [Update subnet-evm](#update-subnet-evm)
+  - [Updating Utilities](#updating-utilities)
   - [Network Upgrades: Enable/Disable Precompiles](#network-upgrades-enabledisable-precompiles)
   - [Customize Subnet and EVM](#customize-subnet-and-evm)
   - [Precompile: Minting Native Coins](#precompile-minting-native-coins)
@@ -457,6 +458,10 @@ $ tree ~/.avalanchego/plugins/
 1. Download the latest pre-built binary on [subnet-evm GitHub](https://github.com/ava-labs/subnet-evm).
 1. Copy the subnet-evm binary to `~/.avalanchego/plugins/<vmID>`
 1. Restart node (`avalanchego`)
+
+## Updating Utilities
+
+See `chains/update-validator-{mainnet,testnet}.sh`.
 
 ## Network Upgrades: Enable/Disable Precompiles
 
