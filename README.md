@@ -72,8 +72,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.10.7](https://app.asana.com/0/1201123720388006/1205121613915222/f)
-2. subnet-evm: v0.5.3
+1. avalanchego: [v1.10.11](https://app.asana.com/0/1205359034048350/1205564632605147/f)
+2. subnet-evm: v0.5.6
 
 ## Mainnet: Jade (玉)
 
@@ -112,8 +112,8 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 
 Environment
 
-1. avalanchego: [v1.10.7](https://app.asana.com/0/1201123720388006/1205121724946598/f)
-2. subnet-evm: v0.5.3
+1. avalanchego: [v1.10.11](https://app.asana.com/0/1205359034048350/1205564460040082/f)
+2. subnet-evm: v0.5.6
 
 # Avalanche Subnets
 
