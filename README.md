@@ -368,6 +368,8 @@ High-level concepts
     1. `subnet-cli` will find private key from `$PWD/.subnet-cli.pk` by default.
     1. The wallet needs to have 0.001 AVAX at least on P-Chain (Fuji).
 
+If you see `Error: validator not found` when adding a validator to subnet and confirmed that you've re-staked successfully, you can check if the node is running as P-Chain validator by checking the node's explorer page: `https://subnets-test.avax.network/validators/NodeID-<node-id>`. After re-staking, P-Chain needs minutes to update the validator status.
+
 ## Renew Validator
 
 If the validator's staking duration is expired, the staking amount and rewards will be sent to the staking wallet on P-Chain automatically. You can follow the same steps above to add it as a validator again.
