@@ -636,6 +636,8 @@ Deployers
     1. [`0xf8f26151c9f445407eeA10E5DcA1C7e12a6194eE`](https://mainnet.num.network/tx/0xa6052c051e00566fe7e8bbe61b9f49e37bde9a84c95d5bc477eef26fb91a5c8b)
 1. NFTIV
     1. [`0x69bE6d143A291deBd6b7c51eD50CE7E25Fc74ee9`](https://mainnet.num.network/tx/0x857867c861ad0d39131fd33f206126dc553118a17d9efb1e5c6640ccbeeb76a0)
+1. Superworld
+    1. [`0x738354B3048639C4856779Cc379D47bAa8117ec7`](https://mainnet.num.network/tx/0x1cd55cb33c347145e74848b731530d2d3df99be823bd923095696cc9c321e2ce)
 
 ## Admin
 
