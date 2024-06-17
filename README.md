@@ -638,6 +638,8 @@ Deployers
     1. [`0x69bE6d143A291deBd6b7c51eD50CE7E25Fc74ee9`](https://mainnet.num.network/tx/0x857867c861ad0d39131fd33f206126dc553118a17d9efb1e5c6640ccbeeb76a0)
 1. Superworld
     1. [`0x738354B3048639C4856779Cc379D47bAa8117ec7`](https://mainnet.num.network/tx/0x1cd55cb33c347145e74848b731530d2d3df99be823bd923095696cc9c321e2ce)
+1. Bulksender
+    1. [`0x3de332e44A0bBff025838C187873d77f92caf5E9`](https://mainnet.num.network/tx/0x54e9498ecf9937baaa73dfbf5f9419171975faf35c566e107dc811bc198d3594)
 
 ## Admin
 
