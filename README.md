@@ -10,6 +10,7 @@
   - [Create a Subnet](#create-a-subnet)
   - [Add Validator to Subnet](#add-validator-to-subnet)
   - [Renew Validator](#renew-validator)
+    - [BLS Public Key and BLS Signature](#bls-public-key-and-bls-signature)
   - [RPC](#rpc)
     - [Set RPC](#set-rpc)
     - [Test RPC](#test-rpc)
@@ -381,6 +382,36 @@ Before validation staking expires, any wallet can not stake to a validator again
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
 
 [Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
+
+### BLS Public Key and BLS Signature
+
+If you're asked to provide BLS Public Key and BLS Signature, you can get them by running the following command on the validator node:
+
+```sh
+curl -X POST --data '{
+    "jsonrpc":"2.0",
+    "id"     :1,
+    "method" :"info.getNodeID"
+}' -H 'content-type:application/json;' 127.0.0.1:9650/ext/info
+```
+
+It should return something like this.
+
+```sh
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "nodeID": "NodeID-5mb46qkSBj81k9g9e4VFjGGSbaaSLFRzD",
+    "nodePOP": {
+      "publicKey": "0x8f95423f7142d00a48e1014a3de8d28907d420dc33b3052a6dee03a3f2941a393c2351e354704ca66a3fc29870282e15",
+      "proofOfPossession": "0x86a3ab4c45cfe31cae34c1d06f212434ac71b1be6cfe046c80c162e057614a94a5bc9f1ded1a7029deb0ba4ca7c9b71411e293438691be79c2dbf19d1ca7c3eadb9c756246fc5de5b7b89511c7d7302ae051d9e03d7991138299b5ed6a570a98"
+    }
+  },
+  "id": 1
+}
+```
+
+The publicKey is your BLS Public Key, and proofOfPossession is your BLS Signature. Avalanche uses your public key as the signing message ([source 1](https://docs.gogopool.com/minipool/avalanche-bls-keys#manual-minipools), [source 2](https://docs.avax.network/nodes/maintain/node-backup-and-restore#nodeid)).
 
 ## RPC
 
