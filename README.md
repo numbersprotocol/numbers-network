@@ -411,7 +411,7 @@ It should return something like this.
 }
 ```
 
-The publicKey is your BLS Public Key, and proofOfPossession is your BLS Signature. Avalanche uses your public key as the signing message ([source 1](https://docs.gogopool.com/minipool/avalanche-bls-keys#manual-minipools), [source 2](https://docs.avax.network/nodes/maintain/node-backup-and-restore#nodeid)).
+The publicKey is your BLS Public Key, and proofOfPossession is your BLS Signature. Avalanche uses your public key as the signing message ([source 1](https://docs.avax.network/nodes/validate/add-a-validator#validation-period), [source 2](https://docs.avax.network/nodes/maintain/node-backup-and-restore#nodeid)).
 
 ## RPC
 
