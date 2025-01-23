@@ -427,24 +427,23 @@ $ vim /etc/nginx/sites-available/default
 
 ### Test RPC
 
-Test POST on the RPC node locally:
+Test the RPC connectivity and functionality:
 
 ```sh
-$ cat check_version.sh
-#!/bin/bash
-
-curl -X POST --data '{
-    "jsonrpc": "2.0",
-    "id": 10508,
-    "method": "eth_chainId"
-}' -H "Content-Type: application/json" http://localhost
+$ python3 rpc/rpc_test.py
 ```
 
 Testing result:
 
 ```sh
-$ ./check_version.sh
-{"jsonrpc":"2.0","id":10508,"result":"0x290c"}
+Testing Mainnet RPC
+Node is reachable, HTTP Status Code: 200
+RPC request successful, Response Data: {'jsonrpc': '2.0', 'id': 1, 'result': 'v0.7.0'}
+RPC request successful, Response Data: {'jsonrpc': '2.0', 'id': 10507, 'result': '0x290b'}
+Testing Testnet RPC
+Node is reachable, HTTP Status Code: 200
+RPC request successful, Response Data: {'jsonrpc': '2.0', 'id': 1, 'result': 'v0.6.12'}
+RPC request successful, Response Data: {'jsonrpc': '2.0', 'id': 10508, 'result': '0x290c'}
 ```
 
 ## Upgrade Node (avalanchego)
