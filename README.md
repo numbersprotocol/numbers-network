@@ -1,9 +1,8 @@
 # Numbers Network
 
 - [Numbers Network](#numbers-network)
-  - [Network Stack](#network-stack)
-  - [Testnet: Snow (雪)](#testnet-snow-雪)
   - [Mainnet: Jade (玉)](#mainnet-jade-玉)
+  - [Testnet: Snow (雪)](#testnet-snow-雪)
 - [Avalanche Subnets](#avalanche-subnets)
   - [Concepts](#concepts)
   - [Launch Node (avalanchego)](#launch-node-avalanchego)
@@ -33,9 +32,25 @@
 - [Bridge](#bridge)
 - [Archieve Node](#archieve-node)
 
-## Network Stack
+## Mainnet: Jade (玉)
 
-![](https://bafkreigawrk2dszeuzhs5ehr6dsvv5sq7lwberkmx3jqmzkck3tqqw5x54.ipfs.dweb.link/)
+Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10507)
+
+1. Network Name: Numbers Jade
+2. New RPC URL: https://mainnetrpc.num.network
+3. Chain ID: 10507
+4. Currency Symbol: NUM
+5. Block Explorer URL: https://mainnet.num.network
+6. Websocket RPC URL: wss://mainnetrpc.num.network/ws
+7. Environment
+    1. avalanchego: v1.12.2
+    2. subnet-evm: v0.7.1
+    3. Subnet ID: `2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ`
+    4. Blockchain ID: `2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE`
+    5. Chain Name: numbersevm
+    6. VM ID: `qeX7kcVMMkVLB9ZJKTpvtSjpLbtYooNEdpFzFShwRTFu76qdx`
+    7. VM Genesis: genesis.json
+    8. Primary P-Chain Address: `P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g`
 
 ## Testnet: Snow (雪)
 
@@ -47,81 +62,21 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 4. Currency Symbol: NUM
 5. Block Explorer URL: https://testnet.num.network
 6. Websocket RPC URL: wss://testnetrpc.num.network/ws
-
-```
-*-------------------------*-----------------------------------------------------------------------*
-| PRIMARY P-CHAIN ADDRESS | P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk                         |
-*-------------------------*-----------------------------------------------------------------------*
-| TOTAL P-CHAIN BALANCE   | 2.0910000 $AVAX                                                       |
-*-------------------------*-----------------------------------------------------------------------*
-| URI                     | https://api.avax-test.network                                         |
-*-------------------------*-----------------------------------------------------------------------*
-| NETWORK NAME            | fuji                                                                  |
-*-------------------------*-----------------------------------------------------------------------*
-| SUBNET VALIDATORS       | [24WK7qiKXAumya1kKEktwj2ubBbRyq5UW A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p] |
-*-------------------------*-----------------------------------------------------------------------*
-| SUBNET ID               | 81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe                     |
-*-------------------------*-----------------------------------------------------------------------*
-| BLOCKCHAIN ID           | 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ                    |
-*-------------------------*-----------------------------------------------------------------------*
-| CHAIN NAME              | captevm                                                               |
-*-------------------------*-----------------------------------------------------------------------*
-| VM ID                   | kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT                     |
-*-------------------------*-----------------------------------------------------------------------*
-| VM GENESIS PATH         | ../genesis/genesis-nativecoin-feemgr-feerecv.json                     |
-*-------------------------*-----------------------------------------------------------------------*
-```
-
-Environment
-
-1. avalanchego: [v1.12.0-fuji](https://app.asana.com/0/1200906800350668/1208262144201052/f)
-2. subnet-evm: v0.6.12
-
-## Mainnet: Jade (玉)
-
-Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10507)
-
-1. Network Name: Numbers Jade
-2. New RPC URL: https://mainnetrpc.num.network
-3. Chain ID: 10507
-4. Currency Symbol: NUM
-5. Block Explorer URL: https://mainnet.num.network
-6. Websocket RPC URL: wss://mainnetrpc.num.network/ws
-
-```
-*-------------------------*----------------------------------------------------*
-| PRIMARY P-CHAIN ADDRESS | P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g      |
-*-------------------------*----------------------------------------------------*
-| TOTAL P-CHAIN BALANCE   | 6.9990000 $AVAX                                    |
-*-------------------------*----------------------------------------------------*
-| URI                     | https://api.avax.network                           |
-*-------------------------*----------------------------------------------------*
-| NETWORK NAME            | mainnet                                            |
-*-------------------------*----------------------------------------------------*
-| SUBNET VALIDATORS       | [BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx]                |
-*-------------------------*----------------------------------------------------*
-| SUBNET ID               | 2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ |
-*-------------------------*----------------------------------------------------*
-| BLOCKCHAIN ID           | 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE |
-*-------------------------*----------------------------------------------------*
-| CHAIN NAME              | numbersevm                                         |
-*-------------------------*----------------------------------------------------*
-| VM ID                   | qeX7kcVMMkVLB9ZJKTpvtSjpLbtYooNEdpFzFShwRTFu76qdx  |
-*-------------------------*----------------------------------------------------*
-| VM GENESIS PATH         | ./genesis.json                                     |
-*-------------------------*----------------------------------------------------*
-```
-
-Environment
-
-1. avalanchego: [v1.12.0](https://app.asana.com/0/1200906800350668/1208262144201052/f)
-2. subnet-evm: v0.7.0
+7. Environment
+    1. avalanchego: v1.12.2
+    2. subnet-evm: v0.7.1
+    3. Subnet ID: `81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe`
+    4. Blockchain ID: `2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ`
+    5. Chain Name: captevm
+    6. VM ID: `kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT`
+    7. VM Genesis: genesis-nativecoin-feemgr-feerecv.json
+    8. Primary P-Chain Address: `P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk`
 
 # Avalanche Subnets
 
 ## Concepts
 
-1. Avalanche's high-level components: Avalanche -> Subnets -> Chains -> VMs
+1. Avalanche's high-level components: `Avalanche -> Subnets -> Chains -> VMs`
 2. Every subnet / chain / vm has an unique ID.
 3. Blackhole: `0x0100000000000000000000000000000000000000`, it is unchangeable.
 
