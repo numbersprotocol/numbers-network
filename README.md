@@ -1,5 +1,7 @@
 # Numbers Network
 
+Numbers Network is dedicated to preserving digital media provenance and related applications. Numbers Network is EVM-compatible, and developers familiar with Ethereum ecosystem can run their applications easily.
+
 - [Numbers Network](#numbers-network)
   - [Mainnet: Jade (玉)](#mainnet-jade-玉)
   - [Testnet: Snow (雪)](#testnet-snow-雪)
@@ -77,7 +79,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 ## Concepts
 
 1. Avalanche's high-level components: `Avalanche -> Subnets -> Chains -> VMs`
-2. Every subnet / chain / vm has an unique ID.
+2. Every subnet / chain / vm has a unique ID.
 3. Blackhole: `0x0100000000000000000000000000000000000000`, it is unchangeable.
 
 ## Launch Node (avalanchego)
