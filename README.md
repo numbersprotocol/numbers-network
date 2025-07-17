@@ -11,6 +11,7 @@ Numbers Network is dedicated to preserving digital media provenance and related 
   - [Create a Subnet](#create-a-subnet)
   - [Add Validator to Subnet](#add-validator-to-subnet)
   - [Renew Validator](#renew-validator)
+  - [Import Existing L1 in Avalanche CLI](#import-existing-l1-in-avalanche-cli)
     - [BLS Public Key and BLS Signature](#bls-public-key-and-bls-signature)
   - [RPC](#rpc)
     - [Set RPC](#set-rpc)
@@ -301,14 +302,16 @@ Launch validator. When running `avalanchego`, add
 High-level concepts
 
 1. Make a node as validator
-    1. Visit [wallet.avax.network](https://wallet.avax.network/wallet/earn)
-    1. Follow the steps in [this official doc](https://docs.avax.network/nodes/validate/add-a-validator#add-as-a-validator).
-        1. Ensure there is sufficient balance on P-Chain.
-1. Add the validator to the subnet
+    1. Open Core Browser Extension
+    1. Stake AVAX to make a node a validator
+        1. Go to https://core.app/stake
+        1. Go to Settings -> enable/disable testnet mode
+        1. Go to Validate -> add necessary info
+2. Add the validator to the subnet
     1. Ues subnet admin to run `subnet-cli`. Find the Subnet admin in the Subnets section below.
         1. In general, you will run `subnet-cli` on your notebook instead of validator nodes.
-        1. You can use [`avalanchego-api-scripts/subnet-cli/install-subnet-cli-testnet.sh`](https://github.com/numbersprotocol/avalanchego-api-scripts/blob/main/subnet-cli/subnet-cli-add-subnet-validator-testnet.sh) to install.
-    1. Run the command
+        2. You can use [`avalanchego-api-scripts/subnet-cli/install-subnet-cli-testnet.sh`](https://github.com/numbersprotocol/avalanchego-api-scripts/blob/main/subnet-cli/subnet-cli-add-subnet-validator-testnet.sh) to install.
+    2. Run the command
 
         ```shell
         # testnet
@@ -323,8 +326,8 @@ High-level concepts
             --public-uri "https://api.avax.network"
         ```
 
-    1. `subnet-cli` will find private key from `$PWD/.subnet-cli.pk` by default.
-    1. The wallet needs to have 0.001 AVAX at least on P-Chain (Fuji).
+    3. `subnet-cli` will find private key from `$PWD/.subnet-cli.pk` by default.
+    4. The wallet needs to have 0.001 AVAX at least on P-Chain (Fuji).
 
 If you see `Error: validator not found` when adding a validator to subnet and confirmed that you've re-staked successfully, you can check if the node is running as P-Chain validator by checking the node's explorer page: `https://subnets-test.avax.network/validators/NodeID-<node-id>`. After re-staking, P-Chain needs minutes to update the validator status.
 
@@ -339,6 +342,39 @@ Before validation staking expires, any wallet can not stake to a validator again
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
 
 [Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
+
+## Import Existing L1 in Avalanche CLI
+
+```sh
+avalanche blockchain import public
+```
+
+Provide the existing L1 information, such as the RPC endpoint, Blockchain ID (not Subnet ID), VM type, and VM version. For example:
+
+```sh
+✔ Fuji Testnet                            # choose network
+What is the RPC endpoint?: https://testnetrpc.num.network
+What is the Blockchain ID?: 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ
+✔ Subnet-EVM                              # VM type
+✔ v0.7.2                                  # VM version
+Subnet numbers-snow imported successfully
+```
+
+Verify the imported L1 by running the following commands.
+
+Confirm the import is successful:
+
+```sh
+avalanche blockchain list
+```
+
+Check blockchain information summary:
+
+```sh
+avalanche blockchain describe captevm
+```
+
+
 
 ### BLS Public Key and BLS Signature
 
