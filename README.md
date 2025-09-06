@@ -617,7 +617,8 @@ Check the [official doc](https://docs.avax.network/subnets/customize-a-subnet#re
 
 ## Interoperability
 
-[Overview](https://ava-labs-preview-4bd33b78-6a2a-400d-a6ba-4df588ac1831.docs.buildwithfern.com/portal/interoperability/overview)
+* [Overview](https://ava-labs-preview-4bd33b78-6a2a-400d-a6ba-4df588ac1831.docs.buildwithfern.com/portal/interoperability/overview)
+* [CCTP](https://developers.circle.com/cctp/cctp-supported-blockchains)
 
 ## Admin
 
