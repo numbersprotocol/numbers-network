@@ -513,8 +513,10 @@ $ tree ~/.avalanchego/configs/
 ```
 
 Tips
-1. After updating `config.json`, `avalanchego` needs to be restarted.
-2. If you add fee recipient, the fee recipient will get 100% gas fee.
+1. To update chain config (e.g., `config.json`)
+  1.1. After updating chain config (e.g., `config.json`), `avalanchego` needs to be restarted.
+  1.2. If there is any archive node, you need to update archive node's chain config, too.
+3. If you add fee recipient, the fee recipient will get 100% gas fee.
 
 References
 1. https://docs.avax.network/subnets/customize-a-subnet
