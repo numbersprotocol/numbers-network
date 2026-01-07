@@ -506,7 +506,8 @@ $ tree ~/.avalanchego/configs/
 /home/ubuntu/.avalanchego/configs/
 ├── chains
 │   └── 29YUizsFS9pFPvYjsSKB23M2QAooU1yCE2dfSw6pBhpL46SA18
-│       └── config.json
+│       ├── config.json
+│       └── upgrade.json
 └── subnets
     └── 2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG.json
 ```
