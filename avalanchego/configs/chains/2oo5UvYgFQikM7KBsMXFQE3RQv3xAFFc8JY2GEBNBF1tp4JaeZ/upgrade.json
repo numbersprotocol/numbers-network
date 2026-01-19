@@ -1,0 +1,19 @@
+{
+  "networkUpgradeOverrides": {
+    "graniteTimestamp": 1762510500
+  },
+  "precompileUpgrades": [
+    {
+      "contractDeployerAllowListConfig": {
+        "blockTimestamp": 1767786600,
+        "adminAddresses": ["0x63B7076FC0A914Af543C2e5c201df6C29FCC18c5"]
+      }
+    },
+    {
+      "contractDeployerAllowListConfig": {
+        "blockTimestamp": 1767787800,
+        "disable": true
+      }
+    }
+  ]
+}

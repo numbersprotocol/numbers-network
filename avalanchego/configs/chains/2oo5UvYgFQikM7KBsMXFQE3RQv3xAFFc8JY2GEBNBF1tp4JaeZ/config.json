@@ -1,0 +1,15 @@
+{
+    "feeRecipient": "0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481",
+    "pruning-enabled": false,
+    "eth-apis": [
+        "eth",
+	"eth-filter",
+	"net",
+	"web3",
+	"internal-eth",
+	"internal-blockchain",
+	"internal-transaction",
+	"internal-tx-pool",
+	"debug-tracer"
+    ]
+}
