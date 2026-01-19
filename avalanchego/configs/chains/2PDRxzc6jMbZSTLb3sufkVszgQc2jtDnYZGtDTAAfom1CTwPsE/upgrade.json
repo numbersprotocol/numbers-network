@@ -1,0 +1,10 @@
+{
+  "precompileUpgrades": [
+    {
+      "contractDeployerAllowListConfig": {
+        "blockTimestamp": 1767789000,
+        "disable": true
+      }
+    }
+  ]
+}
