@@ -47,7 +47,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 5. Block Explorer URL: https://mainnet.num.network
 6. Websocket RPC URL: wss://mainnetrpc.num.network/ws
 7. Environment
-    1. avalanchego: v1.14.0
+    1. avalanchego: v1.14.1
     2. subnet-evm: v0.8.0
     3. Subnet ID: `2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ`
     4. Blockchain ID: `2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE`
@@ -67,7 +67,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
 5. Block Explorer URL: https://testnet.num.network
 6. Websocket RPC URL: wss://testnetrpc.num.network/ws
 7. Environment
-    1. avalanchego: v1.14.0
+    1. avalanchego: v1.14.1
     2. subnet-evm: v0.8.0
     3. Subnet ID: `81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe`
     4. Blockchain ID: `2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ`
