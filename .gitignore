@@ -1,1 +1,3 @@
 .subnet-cli.pk
+__pycache__/
+*.pyc

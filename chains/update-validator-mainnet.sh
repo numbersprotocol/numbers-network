@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 AVALANCHEGO_PREVIOUS_VERSION="1.10.7"
 AVALANCHEGO_VERSION="1.10.11"
@@ -10,22 +11,28 @@ SUBNET_ID="2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ"
 
 download_avalanchego() {
     echo "Step: download_avalanchego"
-    wget https://github.com/ava-labs/avalanchego/releases/download/v${AVALANCHEGO_VERSION}/avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz
-    tar xzf avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz
-    cp avalanchego-v${AVALANCHEGO_PREVIOUS_VERSION}/run.sh avalanchego-v${AVALANCHEGO_VERSION}/
+    local archive="avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz"
+    wget "https://github.com/ava-labs/avalanchego/releases/download/v${AVALANCHEGO_VERSION}/${archive}"
+    wget "https://github.com/ava-labs/avalanchego/releases/download/v${AVALANCHEGO_VERSION}/${archive}.sha256"
+    sha256sum --check "${archive}.sha256"
+    tar xzf "${archive}"
+    cp "avalanchego-v${AVALANCHEGO_PREVIOUS_VERSION}/run.sh" "avalanchego-v${AVALANCHEGO_VERSION}/"
 }
 
-download_sunbet_evm() {
-    echo "Step: download_sunbet_evm"
-    mkdir subnet-evm-${SUBNET_EVM_VERSION}
-    wget https://github.com/ava-labs/subnet-evm/releases/download/v${SUBNET_EVM_VERSION}/subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz
-    tar xzf subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz -C subnet-evm-${SUBNET_EVM_VERSION}
+download_subnet_evm() {
+    echo "Step: download_subnet_evm"
+    local archive="subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz"
+    mkdir "subnet-evm-${SUBNET_EVM_VERSION}"
+    wget "https://github.com/ava-labs/subnet-evm/releases/download/v${SUBNET_EVM_VERSION}/${archive}"
+    wget "https://github.com/ava-labs/subnet-evm/releases/download/v${SUBNET_EVM_VERSION}/${archive}.sha256"
+    sha256sum --check "${archive}.sha256"
+    tar xzf "${archive}" -C "subnet-evm-${SUBNET_EVM_VERSION}"
 }
 
 update_subnet_evm() {
     echo "Step: update_subnet_evm"
-    cp subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm ~/.avalanchego/plugins/${VM_ID}
-    sha256sum subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm ~/.avalanchego/plugins/${VM_ID}
+    cp "subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm" ~/.avalanchego/plugins/"${VM_ID}"
+    sha256sum "subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm" ~/.avalanchego/plugins/${VM_ID}
 }
 
 show_validator_files() {
@@ -58,7 +65,7 @@ show_next_action_reminder() {
 main() {
     show_configs
     download_avalanchego
-    download_sunbet_evm
+    download_subnet_evm
     update_subnet_evm
     show_validator_files
     show_next_action_reminder
