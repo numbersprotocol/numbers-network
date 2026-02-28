@@ -24,6 +24,11 @@ upstream validator {
 	server <internal-ip-val-t5>:9650;
 }
 
+map $http_origin $allowed_ws_origin {
+	default "";
+	"~^https://(testnetrpc\.num\.network|testnetrpc\.numbersprotocol\.io)$" $http_origin;
+}
+
 # Default server configuration
 #
 server {
@@ -137,6 +142,9 @@ server {
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "Upgrade";
 		proxy_set_header Host $host;
+		proxy_set_header Origin $allowed_ws_origin;
+		proxy_read_timeout 3600s;
+		proxy_send_timeout 3600s;
 	}
 
 	# pass PHP scripts to FastCGI server

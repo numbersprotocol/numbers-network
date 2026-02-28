@@ -1,1 +1,8 @@
 .subnet-cli.pk
+.env
+*.pem
+*.key
+*.crt
+*.log
+.DS_Store
+node_modules/
