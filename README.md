@@ -286,15 +286,15 @@ waiting for validator 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to start validating GBEw
 
 Launch validator. When running `avalanchego`, add
 
-* `-—http-host=0.0.0.0`: Make MetaMask can access the RPC URL
-* `--http-allowed-hosts="*"`: Allow traffic from the RPC node (since v1.10.3)
+* `--http-host=127.0.0.1`: Bind the HTTP server to localhost only. Expose RPC externally via a reverse proxy (e.g., Nginx).
+* `--http-allowed-hosts="localhost,127.0.0.1,<rpc-hostname>"`: Restrict allowed hosts (since v1.10.3)
 
 ```sh
 ./avalanchego \
     --track-subnets=81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe\
     --network-id=fuji \
-    --http-host=0.0.0.0 \
-    --http-allowed-hosts="*" \
+    --http-host=127.0.0.1 \
+    --http-allowed-hosts="localhost,127.0.0.1,<rpc-hostname>" \
     --public-ip=<node-public-ip>
 ```
 
@@ -908,9 +908,9 @@ Make a Full Node instance to be an Archive Node instance:
 
     ./avalanchego \
         --track-subnets=${SUBNET_MAINNET} \
-        --http-host=0.0.0.0 \
+        --http-host=127.0.0.1 \
         --public-ip=<node-public-ip> \
-        --http-allowed-hosts="*"
+        --http-allowed-hosts="localhost,127.0.0.1,<rpc-hostname>"
     ```
 
     Run an archive node for testnet
@@ -923,9 +923,9 @@ Make a Full Node instance to be an Archive Node instance:
 
     ./avalanchego \
         --track-subnets=${SUBNET_MAINNET} \
-        --http-host=0.0.0.0 \
+        --http-host=127.0.0.1 \
         --public-ip=<node-public-ip> \
-        --http-allowed-hosts="*"
+        --http-allowed-hosts="localhost,127.0.0.1,<rpc-hostname>"
     ```
 
 1. (optional) Test an Archive Node

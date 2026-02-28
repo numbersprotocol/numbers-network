@@ -6,11 +6,6 @@
 URL="127.0.0.1:9650"
 CHAIN_ID="$1"
 
-curl -X POST --data "{ 
-    \"jsonrpc\": \"2.0\", 
-    \"method\": \"info.isBootstrapped\", 
-    \"params\":{ 
-        \"chain\":\"${CHAIN_ID}\" 
-    }, 
-    \"id\": 1 
-}" -H 'content-type:application/json;' ${URL}/ext/info 
+curl -X POST --data "$(jq -n --arg chain "${CHAIN_ID}" \
+    '{"jsonrpc":"2.0","method":"info.isBootstrapped","params":{"chain":$chain},"id":1}')" \
+    -H 'content-type:application/json;' "${URL}/ext/info"

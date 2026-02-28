@@ -6,11 +6,29 @@ SUBNET_EVM_VERSION="0.5.6"
 # Numbers Mainnet
 VM_ID="qeX7kcVMMkVLB9ZJKTpvtSjpLbtYooNEdpFzFShwRTFu76qdx"
 SUBNET_ID="2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ"
+# Update these checksums to match the expected SHA256 hashes for the downloaded versions.
+# Obtain them from the official release pages on GitHub.
+AVALANCHEGO_SHA256="" # Populate expected SHA256 for avalanchego tarball
+SUBNET_EVM_SHA256=""  # Populate expected SHA256 for subnet-evm tarball
 
+verify_checksum() {
+    local expected="$1"
+    local file="$2"
+    if [[ -n "${expected}" ]]; then
+        echo "verifying checksum for ${file}"
+        if ! echo "${expected}  ${file}" | sha256sum -c -; then
+            echo "Error: checksum verification failed for ${file}. Aborting." >&2
+            exit 1
+        fi
+    else
+        echo "Warning: expected checksum not set for ${file}. Skipping verification." >&2
+    fi
+}
 
 download_avalanchego() {
     echo "Step: download_avalanchego"
     wget https://github.com/ava-labs/avalanchego/releases/download/v${AVALANCHEGO_VERSION}/avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz
+    verify_checksum "${AVALANCHEGO_SHA256}" "avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz"
     tar xzf avalanchego-linux-amd64-v${AVALANCHEGO_VERSION}.tar.gz
     cp avalanchego-v${AVALANCHEGO_PREVIOUS_VERSION}/run.sh avalanchego-v${AVALANCHEGO_VERSION}/
 }
@@ -19,6 +37,7 @@ download_sunbet_evm() {
     echo "Step: download_sunbet_evm"
     mkdir subnet-evm-${SUBNET_EVM_VERSION}
     wget https://github.com/ava-labs/subnet-evm/releases/download/v${SUBNET_EVM_VERSION}/subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz
+    verify_checksum "${SUBNET_EVM_SHA256}" "subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz"
     tar xzf subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz -C subnet-evm-${SUBNET_EVM_VERSION}
 }
 
