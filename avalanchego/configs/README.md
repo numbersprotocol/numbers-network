@@ -30,11 +30,25 @@ The C-Chain configuration enables pruning to optimize storage usage:
 - Full historical data retention
 - Pruning disabled for complete blockchain history
 - Supports historical queries and provenance lookups
+- Exposes only `eth`, `eth-filter`, `net`, and `web3` APIs
 
 **Validator Nodes** (`config-validator.json`):
 - Pruning enabled for optimal storage
 - Maintains recent state for validation
 - Reduced disk space requirements
+
+## Security Recommendations
+
+### API Exposure
+- **Do NOT** add `debug-tracer`, `internal-eth`, `internal-blockchain`, `internal-transaction`, or `internal-tx-pool` to the `eth-apis` list in publicly accessible node configurations. These APIs expose sensitive internal node state and tracing capabilities.
+- If debug/internal APIs are required for operational purposes, restrict their use to nodes that are **not** exposed to the public internet (e.g., behind a firewall or VPN).
+- When running AvalancheGo, bind `--http-host` to `127.0.0.1` instead of `0.0.0.0` to prevent unintended public exposure of the RPC endpoint. Only expose via a reverse proxy with appropriate access controls.
+
+### Precompile Admin Addresses
+- Avoid using a single EOA (externally owned account) as the admin for multiple precompiles (`contractDeployerAllowListConfig`, `contractNativeMinterConfig`, `feeManagerConfig`). A single compromised key would grant full control over token minting, fee management, and contract deployment simultaneously.
+- Use a **multisig wallet** (e.g., Gnosis Safe) as the admin address for each precompile.
+- Use **separate admin addresses** for each precompile to limit blast radius in case of key compromise.
+- Consider adding a **timelock contract** for critical admin operations to allow time for intervention in case of compromise.
 
 ## Usage
 
