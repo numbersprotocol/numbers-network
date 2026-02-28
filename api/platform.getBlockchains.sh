@@ -7,4 +7,4 @@ curl -X POST --data '{
     "id" :1,
     "method" :"platform.getBlockchains",
     "params" :{}
-}' -H 'content-type:application/json;' ${URL}/ext/P
+}' -H 'content-type:application/json;' ${URL}/ext/bc/P

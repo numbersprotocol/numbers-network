@@ -1,5 +1,5 @@
 {
-    "feeRecipient": "0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481",
-    "pruning-enabled": true,
-    "allow-missing-tries": true
+  "feeRecipient": "0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481",
+  "pruning-enabled": true,
+  "allow-missing-tries": true
 }

@@ -5,7 +5,7 @@
 
 subnet-cli wizard \
     --node-ids NodeID-24WK7qiKXAumya1kKEktwj2ubBbRyq5UW,NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p \
-    --vm-genesis-path ../genesis/genesis-nativecoin-feemgr-feerecv.json \
+    --vm-genesis-path ../chains/testnet/genesis-nativecoin-feemgr-feerecv.json \
     --vm-id kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT \
     --chain-name captevm
 

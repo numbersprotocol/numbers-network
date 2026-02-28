@@ -34,7 +34,7 @@ Numbers Network is dedicated to preserving digital media provenance and related 
 - [Self-Hosted Faucet](#self-hosted-faucet)
 - [Wrapped NUM](#wrapped-num)
 - [Bridge](#bridge)
-- [Archieve Node](#archieve-node)
+- [Archive Node](#archive-node)
 
 ## Mainnet: Jade (玉)
 
@@ -286,7 +286,7 @@ waiting for validator 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to start validating GBEw
 
 Launch validator. When running `avalanchego`, add
 
-* `-—http-host=0.0.0.0`: Make MetaMask can access the RPC URL
+* `--http-host=0.0.0.0`: Make MetaMask can access the RPC URL
 * `--http-allowed-hosts="*"`: Allow traffic from the RPC node (since v1.10.3)
 
 ```sh
@@ -341,8 +341,6 @@ Before validation staking expires, any wallet can not stake to a validator again
 > couldn't issue tx: attempted to issue duplicate validation for NodeID-A2Z8m7egVLhKf1Qj14uvXadhExM5zrB7p
 
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
-
-[Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
 
 ## Import Existing L1 in Avalanche CLI
 
@@ -863,7 +861,7 @@ To bridge native NUM to ERC20/BEP20 NUM, you can use [XY Finance](https://app.xy
 
 To know more about NUM token, you can visit the [NUM token website](https://num.numbersprotocol.io/).
 
-# Archieve Node
+# Archive Node
 
 Archive Node provides full history of the blockchain and does not need to be a validator.
 
@@ -919,10 +917,10 @@ Make a Full Node instance to be an Archive Node instance:
     #!/bin/sh
 
     # Subnet IDs
-    SUBNET_MAINNET="81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"
+    SUBNET_TESTNET="81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"
 
     ./avalanchego \
-        --track-subnets=${SUBNET_MAINNET} \
+        --track-subnets=${SUBNET_TESTNET} \
         --http-host=0.0.0.0 \
         --public-ip=<node-public-ip> \
         --http-allowed-hosts="*"

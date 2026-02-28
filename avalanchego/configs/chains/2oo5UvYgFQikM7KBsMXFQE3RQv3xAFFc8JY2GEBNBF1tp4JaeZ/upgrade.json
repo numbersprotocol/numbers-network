@@ -6,7 +6,9 @@
     {
       "contractDeployerAllowListConfig": {
         "blockTimestamp": 1767786600,
-        "adminAddresses": ["0x63B7076FC0A914Af543C2e5c201df6C29FCC18c5"]
+        "adminAddresses": [
+          "0x63B7076FC0A914Af543C2e5c201df6C29FCC18c5"
+        ]
       }
     },
     {

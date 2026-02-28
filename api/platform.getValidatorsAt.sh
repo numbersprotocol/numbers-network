@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source env.sh
+
 SUBNET_ID="$1"
 
 curl -X POST --data "{
@@ -7,7 +9,7 @@ curl -X POST --data "{
     \"method\": \"platform.getValidatorsAt\",
     \"params\": {
         \"height\":1,
-	\"subnetID\": \"${SUBNET_ID}\"
+        \"subnetID\": \"${SUBNET_ID}\"
     },
     \"id\": 1
-}" -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/P
+}" -H 'content-type:application/json;' ${URL}/ext/bc/P

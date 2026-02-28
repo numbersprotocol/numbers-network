@@ -8,12 +8,14 @@ Reference configuration files for Numbers Network nodes running on Avalanche inf
 configs/chains/
 ├── C/                          # Avalanche C-Chain configuration
 │   └── config.json            # Pruning enabled for storage optimization
-├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet
+├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet (Snow)
 │   ├── config.json            # Archive node configuration
-│   └── config-validator.json  # Validator node configuration
-└── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet
+│   ├── config-validator.json  # Validator node configuration
+│   └── upgrade.json           # Network upgrade schedule
+└── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet (Jade)
     ├── config.json            # Archive node configuration
-    └── config-validator.json  # Validator node configuration
+    ├── config-validator.json  # Validator node configuration
+    └── upgrade.json           # Network upgrade schedule
 ```
 
 ## Configuration Overview
@@ -35,6 +37,17 @@ The C-Chain configuration enables pruning to optimize storage usage:
 - Pruning enabled for optimal storage
 - Maintains recent state for validation
 - Reduced disk space requirements
+
+## Network Upgrades (`upgrade.json`)
+
+Unix timestamps used in `upgrade.json` files, with their human-readable equivalents:
+
+| Chain   | Timestamp  | Human-Readable (UTC)      | Description                              |
+|---------|------------|---------------------------|------------------------------------------|
+| Testnet | 1762510500 | 2025-11-07 10:15:00 UTC   | Granite network upgrade override         |
+| Testnet | 1767786600 | 2026-01-07 11:50:00 UTC   | Enable ContractDeployerAllowList precompile |
+| Testnet | 1767787800 | 2026-01-07 12:10:00 UTC   | Disable ContractDeployerAllowList precompile |
+| Mainnet | 1767789000 | 2026-01-07 12:30:00 UTC   | Disable ContractDeployerAllowList precompile |
 
 ## Usage
 

@@ -1,5 +1,5 @@
 {
-    "pruning-enabled": true,
-    "allow-missing-tries": true,
-    "skip-tx-indexing": true
+  "pruning-enabled": true,
+  "allow-missing-tries": true,
+  "skip-tx-indexing": true
 }
