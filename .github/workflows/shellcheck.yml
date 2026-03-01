@@ -1,0 +1,17 @@
+name: Shell Linting
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run ShellCheck
+        run: find . -name "*.sh" -not -path "./.git/*" | xargs shellcheck --severity=error -x

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# shellcheck source=env.sh
+source env.sh
 SUBNET_ID="$1"
 
 curl -X POST --data "{
@@ -10,4 +12,4 @@ curl -X POST --data "{
 	\"subnetID\": \"${SUBNET_ID}\"
     },
     \"id\": 1
-}" -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/P
+}" -H 'content-type:application/json;' "${URL}/ext/bc/P"

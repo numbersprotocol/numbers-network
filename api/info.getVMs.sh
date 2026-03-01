@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# shellcheck source=env.sh
 source env.sh
 
 curl -X POST --data '{
@@ -7,4 +8,4 @@ curl -X POST --data '{
     "id"     :1,
     "method" :"info.getVMs",
     "params" :{}
-}' -H 'content-type:application/json;' ${URL}/ext/info
+}' -H 'content-type:application/json;' "${URL}/ext/info"

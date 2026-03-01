@@ -7,7 +7,8 @@
 #   "vmID": "kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT"
 # }
 
-URL="127.0.0.1:9650"
+# shellcheck source=env.sh
+source env.sh
 BLOCKCHAIN_ID="$1"
 
 curl -X POST --data "{
@@ -17,4 +18,4 @@ curl -X POST --data "{
         \"blockchainID\":\"${BLOCKCHAIN_ID}\"
     },
     \"id\": 1
-}" -H 'content-type:application/json;' ${URL}/ext/P
+}" -H 'content-type:application/json;' "${URL}/ext/P"

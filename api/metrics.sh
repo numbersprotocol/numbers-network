@@ -1,3 +1,6 @@
 #!/bin/bash
 
-curl -X POST 127.0.0.1:9650/ext/metrics
+# shellcheck source=env.sh
+source env.sh
+
+curl -X POST "${URL}/ext/metrics"
