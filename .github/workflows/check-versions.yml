@@ -1,0 +1,51 @@
+name: Check Version Consistency
+
+on:
+  push:
+    paths:
+      - '.versions.env'
+      - 'README.md'
+      - 'chains/update-validator-*.sh'
+  pull_request:
+    paths:
+      - '.versions.env'
+      - 'README.md'
+      - 'chains/update-validator-*.sh'
+
+jobs:
+  check-versions:
+    name: Verify README versions match .versions.env
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load canonical versions
+        run: |
+          # shellcheck source=.versions.env
+          . .versions.env
+          echo "AVALANCHEGO_VERSION=${AVALANCHEGO_VERSION}" >> "$GITHUB_ENV"
+          echo "SUBNET_EVM_VERSION=${SUBNET_EVM_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Check README references canonical versions
+        run: |
+          FAIL=0
+
+          if ! grep -qF "avalanchego: v${AVALANCHEGO_VERSION}" README.md; then
+            echo "ERROR: README.md does not reference avalanchego v${AVALANCHEGO_VERSION} (from .versions.env)"
+            FAIL=1
+          fi
+
+          if ! grep -qF "subnet-evm: v${SUBNET_EVM_VERSION}" README.md; then
+            echo "ERROR: README.md does not reference subnet-evm v${SUBNET_EVM_VERSION} (from .versions.env)"
+            FAIL=1
+          fi
+
+          if [ "$FAIL" -eq 1 ]; then
+            echo ""
+            echo "Update README.md or .versions.env so the versions are consistent."
+            exit 1
+          fi
+
+          echo "OK: README.md versions match .versions.env"

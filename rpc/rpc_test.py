@@ -41,13 +41,18 @@ def test_chain_id(rpc_url, chain_id):
     payload = {
         "jsonrpc": "2.0",
         "method": "eth_chainId",
-        "id": chain_id,
+        "id": 1,
     }
 
     try:
         response = requests.post(rpc_url, json=payload)
         response_data = response.json()
         print("RPC request successful, Response Data:", response_data)
+        returned_chain_id = int(response_data['result'], 16)
+        assert returned_chain_id == chain_id, (
+            f"Chain ID mismatch: expected {chain_id}, got {returned_chain_id}"
+        )
+        print(f"Chain ID verified: {returned_chain_id}")
     except Exception as e:
         print(f"RPC request failed, Error: {str(e)}")
 

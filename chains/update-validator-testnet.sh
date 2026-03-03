@@ -1,8 +1,10 @@
 #!/bin/bash
 
-AVALANCHEGO_PREVIOUS_VERSION="1.10.7"
-AVALANCHEGO_VERSION="1.10.11"
-SUBNET_EVM_VERSION="0.5.6"
+# Set AVALANCHEGO_PREVIOUS_VERSION to the version currently installed on your node.
+AVALANCHEGO_PREVIOUS_VERSION="1.10.11"
+# Source canonical version constants (AVALANCHEGO_VERSION, SUBNET_EVM_VERSION)
+# shellcheck source=../.versions.env
+. "$(dirname "$0")/../.versions.env"
 # Numbers Testnet
 VM_ID="kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT"
 SUBNET_ID="81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe"

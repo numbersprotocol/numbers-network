@@ -1,3 +1,8 @@
+# DEPRECATED: subnet-cli (ava-labs/subnet-cli) has been replaced by the
+# Avalanche CLI (ava-labs/avalanche-cli). This script is kept for historical
+# reference only. Use the `avalanche` CLI instead.
+# See the "Import Existing L1 in Avalanche CLI" section in the README.
+
 VERSION=0.0.2 # Populate latest here
 
 GOARCH=$(go env GOARCH)
