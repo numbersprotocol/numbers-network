@@ -54,7 +54,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
     5. Chain Name: numbersevm
     6. VM ID: `qeX7kcVMMkVLB9ZJKTpvtSjpLbtYooNEdpFzFShwRTFu76qdx`
     7. VM Genesis: genesis.json
-    8. Primary P-Chain Address: `P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g`
+    8. Primary P-Chain Address: `P-avax1<REDACTED>`
 
 ## Testnet: Snow (雪)
 
@@ -74,7 +74,7 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
     5. Chain Name: captevm
     6. VM ID: `kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT`
     7. VM Genesis: genesis-nativecoin-feemgr-feerecv.json
-    8. Primary P-Chain Address: `P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk`
+    8. Primary P-Chain Address: `P-fuji1<REDACTED>`
 
 # Avalanche Subnets
 
@@ -119,7 +119,7 @@ ubuntu@ip-172-31-9-106:~/bafu$ ./wizard.sh
                                                                                                                                                    
 Ready to run wizard, should we continue?
 *--------------------------*---------------------------------------------------*
-| P-CHAIN ADDRESS          | P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk     |
+| P-CHAIN ADDRESS          | P-fuji1<REDACTED>                             |
 *--------------------------*---------------------------------------------------*
 | P-CHAIN BALANCE          | 0.7980000 $AVAX                                   |
 *--------------------------*---------------------------------------------------*
@@ -184,7 +184,7 @@ minutes)
 created blockchain "29YUizsFS9pFPvYjsSKB23M2QAooU1yCE2dfSw6pBhpL46SA18" (took 112.952603ms)
 
 *-------------------*----------------------------------------------------*
-| P-CHAIN ADDRESS   | P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk      |
+| P-CHAIN ADDRESS   | P-fuji1<REDACTED>                              |
 *-------------------*----------------------------------------------------*
 | P-CHAIN BALANCE   | 0.6970000 $AVAX                                    |
 *-------------------*----------------------------------------------------*
@@ -233,7 +233,7 @@ ubuntu@ip-172-31-9-106:~/bafu$ ./subnet-cli-add-subnet-validator.sh
 
 Ready to add subnet validator, should we continue?
 *------------------*---------------------------------------------------*
-| P-CHAIN ADDRESS  | P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk     |
+| P-CHAIN ADDRESS  | P-fuji1<REDACTED>                             |
 *------------------*---------------------------------------------------*
 | P-CHAIN BALANCE  | 0.7990000 $AVAX                                   |
 *------------------*---------------------------------------------------*
@@ -263,7 +263,7 @@ added 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to subnet GBEwakER8HzKT7U2mWuVafxTTAMYVQ
 
 waiting for validator 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to start validating GBEwakER8HzKT7U2mWuVafxTTAMYVQnDXeT92NcCVt4gwfLUL...(could take a few minutes)
 *------------------*---------------------------------------------------*
-| P-CHAIN ADDRESS  | P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk     |
+| P-CHAIN ADDRESS  | P-fuji1<REDACTED>                             |
 *------------------*---------------------------------------------------*
 | P-CHAIN BALANCE  | 0.7980000 $AVAX                                   |
 *------------------*---------------------------------------------------*
@@ -342,7 +342,7 @@ Before validation staking expires, any wallet can not stake to a validator again
 
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
 
-[Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
+[Renew Numbers Validators](#) (see internal validator management documentation)
 
 ## Import Existing L1 in Avalanche CLI
 
@@ -395,10 +395,10 @@ It should return something like this.
 {
   "jsonrpc": "2.0",
   "result": {
-    "nodeID": "NodeID-5mb46qkSBj81k9g9e4VFjGGSbaaSLFRzD",
+    "nodeID": "NodeID-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "nodePOP": {
-      "publicKey": "0x8f95423f7142d00a48e1014a3de8d28907d420dc33b3052a6dee03a3f2941a393c2351e354704ca66a3fc29870282e15",
-      "proofOfPossession": "0x86a3ab4c45cfe31cae34c1d06f212434ac71b1be6cfe046c80c162e057614a94a5bc9f1ded1a7029deb0ba4ca7c9b71411e293438691be79c2dbf19d1ca7c3eadb9c756246fc5de5b7b89511c7d7302ae051d9e03d7991138299b5ed6a570a98"
+      "publicKey": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "proofOfPossession": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
     }
   },
   "id": 1

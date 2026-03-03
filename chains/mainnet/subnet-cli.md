@@ -33,7 +33,7 @@ BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx is already a validator on 11111111111111111111
 
 Ready to run wizard, should we continue?
 *--------------------------*---------------------------------------------------*
-| PRIMARY P-CHAIN ADDRESS  | P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g     |
+| PRIMARY P-CHAIN ADDRESS  | P-avax1<REDACTED>                             |
 *--------------------------*---------------------------------------------------*
 | TOTAL P-CHAIN BALANCE    | 8.0000000 $AVAX                                   |
 *--------------------------*---------------------------------------------------*
@@ -91,7 +91,7 @@ waiting for validator BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx to start validating 2gHg
 created blockchain "2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE" (took 827.962044ms)
 
 *-------------------------*----------------------------------------------------*
-| PRIMARY P-CHAIN ADDRESS | P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g      |
+| PRIMARY P-CHAIN ADDRESS | P-avax1<REDACTED>                              |
 *-------------------------*----------------------------------------------------*
 | TOTAL P-CHAIN BALANCE   | 6.9990000 $AVAX                                    |
 *-------------------------*----------------------------------------------------*
