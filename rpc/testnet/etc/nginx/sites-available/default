@@ -16,12 +16,15 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
+limit_req_zone $binary_remote_addr zone=rpc_limit:10m rate=30r/s;
+
 upstream validator {
-	server <internal-ip-val-t1>:9650;
-	server <internal-ip-val-t2>:9650;
-	server <internal-ip-val-t3>:9650;
-	server <internal-ip-val-t4>:9650;
-	server <internal-ip-val-t5>:9650;
+	server <internal-ip-val-t1>:9650 max_fails=3 fail_timeout=30s;
+	server <internal-ip-val-t2>:9650 max_fails=3 fail_timeout=30s;
+	server <internal-ip-val-t3>:9650 max_fails=3 fail_timeout=30s;
+	server <internal-ip-val-t4>:9650 max_fails=3 fail_timeout=30s;
+	server <internal-ip-val-t5>:9650 max_fails=3 fail_timeout=30s;
+	keepalive 16;
 }
 
 # Default server configuration
@@ -120,7 +123,7 @@ server {
 
 	# Add index.php to the list if you are using PHP
 	index index.html index.htm index.nginx-debian.html;
-    server_name testnetrpc.numbersprotocol.io; # managed by Certbot
+    server_name testnetrpc.num.network; # managed by Certbot
 
 
 	location / {
@@ -128,15 +131,25 @@ server {
 		# as directory, then fall back to displaying a 404.
 		#try_files $uri $uri/ =404;
 
+		limit_req zone=rpc_limit burst=50 nodelay;
+		client_max_body_size 1m;
+		proxy_connect_timeout 10s;
+		proxy_read_timeout 60s;
+		proxy_send_timeout 60s;
 		proxy_pass http://validator/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/rpc;
 	}
 
 	location /ws {
 		proxy_pass http://validator/ext/bc/2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/ws;
 		proxy_http_version 1.1;
+		proxy_read_timeout 3600s;
+		proxy_send_timeout 3600s;
+		proxy_buffering off;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "Upgrade";
 		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 	}
 
 	# pass PHP scripts to FastCGI server
@@ -160,21 +173,21 @@ server {
 
     listen [::]:443 ssl ipv6only=on; # managed by Certbot
     listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/testnetrpc.numbersprotocol.io/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/testnetrpc.numbersprotocol.io/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/testnetrpc.num.network/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/testnetrpc.num.network/privkey.pem; # managed by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
 }
 server {
-    if ($host = testnetrpc.numbersprotocol.io) {
+    if ($host = testnetrpc.num.network) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
 	listen 80 ;
 	listen [::]:80 ;
-    server_name testnetrpc.numbersprotocol.io;
+    server_name testnetrpc.num.network;
     return 404; # managed by Certbot
 
 
