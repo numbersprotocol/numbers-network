@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 BLOCKCHAIN_ID="$1"
 

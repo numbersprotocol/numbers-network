@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 AVALANCHEGO_PREVIOUS_VERSION="1.10.7"
 AVALANCHEGO_VERSION="1.10.11"
@@ -24,8 +25,16 @@ download_sunbet_evm() {
 
 update_subnet_evm() {
     echo "Step: update_subnet_evm"
+    EXPECTED_CHECKSUM="$(curl -sL https://github.com/ava-labs/subnet-evm/releases/download/v${SUBNET_EVM_VERSION}/subnet-evm_${SUBNET_EVM_VERSION}_checksums.txt | grep "subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz" | awk '{print $1}')"
+    ACTUAL_CHECKSUM="$(sha256sum subnet-evm_${SUBNET_EVM_VERSION}_linux_amd64.tar.gz | awk '{print $1}')"
+    if [ "${EXPECTED_CHECKSUM}" != "${ACTUAL_CHECKSUM}" ]; then
+        echo "ERROR: Checksum mismatch for subnet-evm tarball. Aborting installation."
+        echo "  Expected: ${EXPECTED_CHECKSUM}"
+        echo "  Actual:   ${ACTUAL_CHECKSUM}"
+        exit 1
+    fi
+    echo "Checksum verified: ${ACTUAL_CHECKSUM}"
     cp subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm ~/.avalanchego/plugins/${VM_ID}
-    sha256sum subnet-evm-${SUBNET_EVM_VERSION}/subnet-evm ~/.avalanchego/plugins/${VM_ID}
 }
 
 show_validator_files() {

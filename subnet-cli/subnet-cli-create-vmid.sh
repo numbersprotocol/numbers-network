@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # https://docs.avax.network/subnets/create-a-fuji-subnet-subnet-cli#build-binary
 

@@ -342,7 +342,7 @@ Before validation staking expires, any wallet can not stake to a validator again
 
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
 
-[Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
+Renew Numbers Validators (see internal task tracker)
 
 ## Import Existing L1 in Avalanche CLI
 
@@ -461,7 +461,7 @@ Notes
 
 1. When upgrading node, you need to upgrade EVM and plugins as well.
 
-    > [jpop32 — 05/12/2021](https://discord.com/channels/578992315641626624/757576823570825316/841775940706762762)
+    > [Community discussion — 05/12/2021](https://discord.com/invite/numprotocol)
     > Plugin is the part of the installation. And it has to be upgraded along with the main executable, yes.
 
 Since `avalanchego v1.9.6`, there are two breaking changes
@@ -950,4 +950,4 @@ Make a Full Node instance to be an Archive Node instance:
         --data '{"method":"debug_traceTransaction","params":["0x7d2dec6c3e7ce2a387d988a0603ce7de6d487d6aeaf6b58eabdb123161cee0a2"],"id":1,"jsonrpc":"2.0"}'
     ```
 
-    [Discord discussion](https://discord.com/channels/578992315641626624/905684871731634196/1026850988042244247)
+    [Discord discussion](https://discord.com/invite/numprotocol)

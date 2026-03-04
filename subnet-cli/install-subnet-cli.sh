@@ -1,3 +1,5 @@
+#!/bin/bash
+set -euo pipefail
 VERSION=0.0.2 # Populate latest here
 
 GOARCH=$(go env GOARCH)

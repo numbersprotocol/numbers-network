@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 curl -X POST --data '{
     "jsonrpc":"2.0",

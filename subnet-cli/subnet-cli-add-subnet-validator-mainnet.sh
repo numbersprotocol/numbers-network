@@ -1,5 +1,6 @@
 #!/bin/bash
-# Validator ID source: https://app.asana.com/0/1202305127727547/1202919355642524/f
+set -euo pipefail
+# Validator ID source: see internal task tracker
 
 NODE_ID="NodeID-BXTBUqX8gitUDtVam4fhRWGD1SfeHGoBx"
 SUBNET_ID="2gHgAgyDHQv7jzFg6MxU2yyKq5NZBpwFLFeP8xX2E3gyK1SzSQ"

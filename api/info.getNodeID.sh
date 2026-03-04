@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Pre-running a node on Chainstake
 #

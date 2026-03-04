@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 # Backup Avalanche validator
 

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Snow
 echo "========== Snow nodes information =========="

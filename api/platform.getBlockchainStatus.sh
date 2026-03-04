@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # {
 #   "id": "fdesjrz477ot2iuUKdrGUephzHEfMN6AayMaWGXxhnZfkGRYr",

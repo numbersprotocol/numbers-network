@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # --node-ids: If you have multiple nodes, use comma to separate them.
 #             Ex: NodeID-8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF,NodeID-24WK7qiKXAumya1kKEktwj2ubBbRyq5UW

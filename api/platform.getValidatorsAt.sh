@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 SUBNET_ID="$1"
 
