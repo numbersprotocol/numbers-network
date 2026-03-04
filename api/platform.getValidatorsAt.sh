@@ -1,13 +1,16 @@
 #!/bin/bash
 
+source env.sh
+
 SUBNET_ID="$1"
+HEIGHT="${2:-1}"
 
 curl -X POST --data "{
     \"jsonrpc\": \"2.0\",
     \"method\": \"platform.getValidatorsAt\",
     \"params\": {
-        \"height\":1,
+        \"height\":${HEIGHT},
 	\"subnetID\": \"${SUBNET_ID}\"
     },
     \"id\": 1
-}" -H 'content-type:application/json;' 127.0.0.1:9650/ext/bc/P
+}" -H 'content-type:application/json;' ${URL}/ext/bc/P

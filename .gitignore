@@ -1,1 +1,23 @@
 .subnet-cli.pk
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Download artifacts
+*.tar.gz
+*.zip
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Environment and secret files
+.env
+*.pem
+*.key

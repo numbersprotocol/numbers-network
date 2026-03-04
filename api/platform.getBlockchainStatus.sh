@@ -7,7 +7,7 @@
 #   "vmID": "kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT"
 # }
 
-URL="127.0.0.1:9650"
+source env.sh
 BLOCKCHAIN_ID="$1"
 
 curl -X POST --data "{
