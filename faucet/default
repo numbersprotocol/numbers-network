@@ -20,6 +20,8 @@ upstream faucet {
 	server localhost:8000;
 }
 
+limit_req_zone $binary_remote_addr zone=faucet_limit:10m rate=1r/m;
+
 # Default server configuration
 #
 server {
@@ -125,6 +127,9 @@ server {
 	}
 
 	location /api/ {
+		limit_req zone=faucet_limit burst=2 nodelay;
+		limit_req_status 429;
+		client_max_body_size 1k;
 		proxy_pass http://faucet;
 	}
 
