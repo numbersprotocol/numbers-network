@@ -8,12 +8,15 @@ Reference configuration files for Numbers Network nodes running on Avalanche inf
 configs/chains/
 ├── C/                          # Avalanche C-Chain configuration
 │   └── config.json            # Pruning enabled for storage optimization
-├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet
+├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet (Snow)
 │   ├── config.json            # Archive node configuration
-│   └── config-validator.json  # Validator node configuration
-└── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet
-    ├── config.json            # Archive node configuration
-    └── config-validator.json  # Validator node configuration
+│   ├── config-validator.json  # Validator node configuration
+│   └── upgrade.json           # Precompile upgrade schedule
+├── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet (Jade)
+│   ├── config.json            # Archive node configuration
+│   ├── config-validator.json  # Validator node configuration
+│   └── upgrade.json           # Precompile upgrade schedule
+└── UPGRADE_HISTORY.md         # Rationale and outcomes for all past upgrades
 ```
 
 ## Configuration Overview
@@ -35,6 +38,19 @@ The C-Chain configuration enables pruning to optimize storage usage:
 - Pruning enabled for optimal storage
 - Maintains recent state for validation
 - Reduced disk space requirements
+
+### Precompile Configurations
+
+Both Numbers Testnet (Snow) and Numbers Mainnet (Jade) use `upgrade.json` files to schedule precompile activations and deactivations.
+
+**Current state (as of all upgrades applied):**
+
+| Network | Precompile | Status |
+|---|---|---|
+| Numbers Testnet (Snow) | `contractDeployerAllowList` | **Disabled** — open contract deployment |
+| Numbers Mainnet (Jade) | `contractDeployerAllowList` | **Disabled** — open contract deployment |
+
+See [`UPGRADE_HISTORY.md`](chains/UPGRADE_HISTORY.md) for the full history of each upgrade, including rationale, execution date, and outcome.
 
 ## Usage
 
