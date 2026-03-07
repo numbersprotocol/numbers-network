@@ -37,19 +37,18 @@ def test_functionality(rpc_url):
         print(f"RPC request failed, Error: {str(e)}")
 
 
-def test_chain_id(rpc_url, chain_id):
+def test_chain_id(rpc_url, expected_chain_id):
     payload = {
         "jsonrpc": "2.0",
         "method": "eth_chainId",
-        "id": chain_id,
+        "params": [],
+        "id": 1,
     }
-
-    try:
-        response = requests.post(rpc_url, json=payload)
-        response_data = response.json()
-        print("RPC request successful, Response Data:", response_data)
-    except Exception as e:
-        print(f"RPC request failed, Error: {str(e)}")
+    response = requests.post(rpc_url, json=payload)
+    response_data = response.json()
+    actual_chain_id = int(response_data["result"], 16)
+    assert actual_chain_id == expected_chain_id, \
+        f"Chain ID mismatch: expected {expected_chain_id}, got {actual_chain_id}"
 
 
 if __name__ == '__main__':
