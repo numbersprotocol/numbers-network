@@ -284,17 +284,14 @@ waiting for validator 8CGJYaRLChC79CCRnvd7sh5eB9E9L9dVF to start validating GBEw
 ```
 </details>
 
-Launch validator. When running `avalanchego`, add
-
-* `-—http-host=0.0.0.0`: Make MetaMask can access the RPC URL
-* `--http-allowed-hosts="*"`: Allow traffic from the RPC node (since v1.10.3)
+Launch validator. When running `avalanchego`, use `--http-host=127.0.0.1` (default) to restrict the RPC to localhost, and expose it externally via a reverse proxy such as nginx. If direct external access is required, set `--http-host=0.0.0.0` and restrict `--http-allowed-hosts` to specific trusted domain names instead of using a wildcard, to preserve DNS rebinding protection (introduced in v1.10.3).
 
 ```sh
 ./avalanchego \
     --track-subnets=81vK49Udih5qmEzU7opx3Zg9AnB33F2oqUTQKuaoWgCvFUWQe\
     --network-id=fuji \
-    --http-host=0.0.0.0 \
-    --http-allowed-hosts="*" \
+    --http-host=127.0.0.1 \
+    --http-allowed-hosts="<your-rpc-domain.example.com>" \
     --public-ip=<node-public-ip>
 ```
 
@@ -342,7 +339,7 @@ Before validation staking expires, any wallet can not stake to a validator again
 
 Validator version distributions: [mainnet](https://explorer-xp.avax.network/validators), [testnet](https://explorer-xp.avax-test.network/validators)
 
-[Renew Numbers Validators](https://app.asana.com/0/1202305127727547/1202919355642524/f) (internal task)
+Renew Numbers Validators (see internal task tracker)
 
 ## Import Existing L1 in Avalanche CLI
 
@@ -908,9 +905,9 @@ Make a Full Node instance to be an Archive Node instance:
 
     ./avalanchego \
         --track-subnets=${SUBNET_MAINNET} \
-        --http-host=0.0.0.0 \
+        --http-host=127.0.0.1 \
         --public-ip=<node-public-ip> \
-        --http-allowed-hosts="*"
+        --http-allowed-hosts="<your-rpc-domain.example.com>"
     ```
 
     Run an archive node for testnet
@@ -923,9 +920,9 @@ Make a Full Node instance to be an Archive Node instance:
 
     ./avalanchego \
         --track-subnets=${SUBNET_MAINNET} \
-        --http-host=0.0.0.0 \
+        --http-host=127.0.0.1 \
         --public-ip=<node-public-ip> \
-        --http-allowed-hosts="*"
+        --http-allowed-hosts="<your-rpc-domain.example.com>"
     ```
 
 1. (optional) Test an Archive Node
