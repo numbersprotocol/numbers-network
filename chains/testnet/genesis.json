@@ -21,7 +21,8 @@
       "maxBlockGasCost": 10000000,
       "targetBlockRate": 2,
       "blockGasCostStep": 500000
-    }
+    },
+    "allowFeeRecipients": true
   },
   "alloc": {
     "63B7076FC0A914Af543C2e5c201df6C29FCC18c5": {

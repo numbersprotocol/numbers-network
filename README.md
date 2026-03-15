@@ -34,7 +34,7 @@ Numbers Network is dedicated to preserving digital media provenance and related 
 - [Self-Hosted Faucet](#self-hosted-faucet)
 - [Wrapped NUM](#wrapped-num)
 - [Bridge](#bridge)
-- [Archieve Node](#archieve-node)
+- [Archive Node](#archive-node)
 
 ## Mainnet: Jade (玉)
 
@@ -75,6 +75,26 @@ Add Network to MetaMask, [one-click by Chainlist](https://chainlist.org/chain/10
     6. VM ID: `kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT`
     7. VM Genesis: genesis-nativecoin-feemgr-feerecv.json
     8. Primary P-Chain Address: `P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk`
+
+## Fee Configuration
+
+The following table summarises the key gas fee parameters per environment:
+
+| Parameter | Mainnet (Jade) | Testnet (Snow) | Devnet |
+|---|---|---|---|
+| `minBaseFee` | 100,000,000,000 (100 Gwei) | 1,000,000,000 (1 Gwei) | 100,000,000,000 (100 Gwei) |
+| `allowFeeRecipients` | `true` | `true` | not set (defaults to `false`) |
+
+> **Note:** Mainnet `minBaseFee` is 100× higher than testnet. Devnet mirrors the mainnet fee level, not testnet. Keep this in mind when estimating production gas costs from testnet measurements.
+
+### Fee Recipients
+
+| Environment | Address | Notes |
+|---|---|---|
+| Mainnet | `0xe49a1220eE09Fbf0D25CA9e3BB8D5fD356Fc67FF` | `allowFeeRecipients: true` in genesis |
+| Testnet | `0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481` | Set in chain config; `allowFeeRecipients: true` in genesis |
+
+When `allowFeeRecipients` is `false` (or absent), the `feeRecipient` field in the chain config is ignored and all gas fees are burned.
 
 # Avalanche Subnets
 
@@ -161,10 +181,10 @@ created subnet "2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG" (took 2.0924
 
 
 Now, time for some config changes on your node(s).
-Set --whitelisted-subnets=2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG and move the compiled VM kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdD
+Set --track-subnets=2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG and move the compiled VM kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdD
 YuaT to <build-dir>/plugins/kmYb53NrmqcW7gfV2FGHBHWXNA6YhhWf7R7LoQeGj9mdDYuaT.
 When you're finished, restart your node.
-✔ Yes, let's continue! I've updated --whitelisted-subnets, built my VM, and restarted my node(s)!
+✔ Yes, let's continue! I've updated --track-subnets, built my VM, and restarted my node(s)!
 
 
 2022-07-11T12:31:13.342Z        info    client/p.go:294 adding subnet validator {"subnetId": "2fQBahhq3F9eip8KobMgjbvBEahW3153kvAy6YPDrGMTceZcGG", 
@@ -863,7 +883,7 @@ To bridge native NUM to ERC20/BEP20 NUM, you can use [XY Finance](https://app.xy
 
 To know more about NUM token, you can visit the [NUM token website](https://num.numbersprotocol.io/).
 
-# Archieve Node
+# Archive Node
 
 Archive Node provides full history of the blockchain and does not need to be a validator.
 
