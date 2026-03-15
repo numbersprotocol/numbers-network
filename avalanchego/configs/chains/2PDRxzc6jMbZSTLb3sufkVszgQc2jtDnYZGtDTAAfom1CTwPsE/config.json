@@ -9,7 +9,6 @@
         "internal-eth",
         "internal-blockchain",
         "internal-transaction",
-	"internal-tx-pool",
         "debug-tracer"
     ]
 }

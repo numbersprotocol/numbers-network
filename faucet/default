@@ -124,7 +124,7 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-	location /api/ {
+	location = /api/claim {
 		proxy_pass http://faucet;
 	}
 
