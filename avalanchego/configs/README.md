@@ -10,10 +10,14 @@ configs/chains/
 │   └── config.json            # Pruning enabled for storage optimization
 ├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet
 │   ├── config.json            # Archive node configuration
-│   └── config-validator.json  # Validator node configuration
+│   ├── config-validator.json  # Validator node configuration
+│   ├── upgrade.json           # Network upgrade schedule (machine-readable)
+│   └── upgrade-notes.md       # Upgrade timestamp documentation (human-readable)
 └── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet
     ├── config.json            # Archive node configuration
-    └── config-validator.json  # Validator node configuration
+    ├── config-validator.json  # Validator node configuration
+    ├── upgrade.json           # Network upgrade schedule (machine-readable)
+    └── upgrade-notes.md       # Upgrade timestamp documentation (human-readable)
 ```
 
 ## Configuration Overview
