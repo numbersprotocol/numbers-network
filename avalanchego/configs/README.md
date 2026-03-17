@@ -8,12 +8,14 @@ Reference configuration files for Numbers Network nodes running on Avalanche inf
 configs/chains/
 ├── C/                          # Avalanche C-Chain configuration
 │   └── config.json            # Pruning enabled for storage optimization
-├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet
+├── 2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/  # Numbers Testnet (Snow)
 │   ├── config.json            # Archive node configuration
-│   └── config-validator.json  # Validator node configuration
-└── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet
+│   ├── config-validator.json  # Validator node configuration
+│   └── upgrade.json           # Network upgrade schedule (precompile upgrades)
+└── 2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/  # Numbers Mainnet (Jade)
     ├── config.json            # Archive node configuration
-    └── config-validator.json  # Validator node configuration
+    ├── config-validator.json  # Validator node configuration
+    └── upgrade.json           # Network upgrade schedule (precompile upgrades)
 ```
 
 ## Configuration Overview
@@ -35,6 +37,19 @@ The C-Chain configuration enables pruning to optimize storage usage:
 - Pruning enabled for optimal storage
 - Maintains recent state for validation
 - Reduced disk space requirements
+
+### Network Upgrade Configurations (`upgrade.json`)
+
+Each chain directory contains an `upgrade.json` file that schedules time-based precompile upgrades using Unix timestamps. These files control when specific EVM precompile features are enabled or disabled on the network.
+
+**Mainnet (`2PDRxzc6jMbZSTLb3sufkVszgQc2jtDnYZGtDTAAfom1CTwPsE/upgrade.json`):**
+- Disables `contractDeployerAllowList` at timestamp `1767789000` (2026-01-07 12:30 UTC), opening contract deployment to all addresses.
+
+**Testnet (`2oo5UvYgFQikM7KBsMXFQE3RQv3xAFFc8JY2GEBNBF1tp4JaeZ/upgrade.json`):**
+- Includes a `networkUpgradeOverrides` for the Granite protocol upgrade (`graniteTimestamp: 1762510500` / 2025-11-06), applied ahead of mainnet to validate compatibility.
+- Performs a two-step transition: re-enables `contractDeployerAllowList` with an updated admin at `1767786600`, then disables it at `1767787800` (2026-01-07 12:10 UTC).
+
+For the security rationale behind these changes, see [`SECURITY_DECISIONS.md`](../../../SECURITY_DECISIONS.md) at the repository root.
 
 ## Usage
 
