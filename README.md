@@ -35,6 +35,10 @@ Numbers Network is dedicated to preserving digital media provenance and related 
 - [Wrapped NUM](#wrapped-num)
 - [Bridge](#bridge)
 - [Archieve Node](#archieve-node)
+- [Disk Monitoring](#disk-monitoring)
+  - [Cron-based disk check script](#cron-based-disk-check-script)
+  - [GCP Cloud Monitoring alerts](#gcp-cloud-monitoring-alerts)
+  - [Disk Management Runbook](#disk-management-runbook)
 
 ## Mainnet: Jade (玉)
 
@@ -951,3 +955,66 @@ Make a Full Node instance to be an Archive Node instance:
     ```
 
     [Discord discussion](https://discord.com/channels/578992315641626624/905684871731634196/1026850988042244247)
+
+# Disk Monitoring
+
+Multiple GCE instances run continuously-growing blockchain databases. Without proactive
+monitoring, validators silently auto-shutdown when disk space falls below ~3% free,
+causing chain downtime and transaction mempool backlog.
+
+Alert thresholds:
+
+| Level    | Threshold | Action                                    |
+|----------|-----------|-------------------------------------------|
+| OK       | < 80%     | No action required                        |
+| WARNING  | ≥ 80%     | Schedule cleanup or expansion within 48 h |
+| CRITICAL | ≥ 90%     | Immediate action required                 |
+
+## Cron-based disk check script
+
+`monitoring/disk-check.sh` is a lightweight shell script that checks all mounted
+filesystems and fires alerts via **email** and/or **Slack** when usage exceeds the
+configured thresholds.
+
+Deploy to each GCE instance:
+
+```sh
+sudo mkdir -p /opt/numbers-network/monitoring
+sudo cp monitoring/disk-check.sh /opt/numbers-network/monitoring/
+sudo chmod +x /opt/numbers-network/monitoring/disk-check.sh
+
+# Set environment variables (edit as needed)
+export ALERT_EMAIL=ops@example.com
+export SLACK_WEBHOOK_URL=https://hooks.slack.com/services/XXX/YYY/ZZZ
+export DISK_WARNING_PCT=80
+export DISK_CRITICAL_PCT=90
+
+# Add a cron job to run every 15 minutes
+(crontab -l 2>/dev/null; echo "*/15 * * * * /opt/numbers-network/monitoring/disk-check.sh >> /var/log/disk-check.log 2>&1") | crontab -
+```
+
+## GCP Cloud Monitoring alerts
+
+`monitoring/setup-gcp-disk-alerts.sh` provisions GCP-native alerting policies
+(WARNING at 80%, CRITICAL at 90%) and notification channels using the `gcloud` CLI.
+
+```sh
+export GCP_PROJECT=your-gcp-project-id
+export ALERT_EMAIL=ops@example.com
+# Optional Slack integration:
+# export SLACK_CHANNEL_NAME=numbers-ops
+# export SLACK_AUTH_TOKEN=xoxb-...
+
+bash monitoring/setup-gcp-disk-alerts.sh
+```
+
+> **Note**: The [Ops Agent](https://cloud.google.com/stackdriver/docs/solutions/agents/ops-agent/installation)
+> must be installed on each GCE instance to populate the
+> `agent.googleapis.com/disk/percent_used` metric used by these policies.
+
+## Disk Management Runbook
+
+For step-by-step instructions on disk expansion, Avalanchego chain data pruning,
+and Blockscout/explorer database cleanup, see:
+
+[docs/runbooks/disk-management.md](docs/runbooks/disk-management.md)
