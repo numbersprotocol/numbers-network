@@ -66,51 +66,40 @@ check_existing_deployment() {
 
 # ---------- Helpers ----------
 
-# Run forge create and extract the deployed address.
-# All error/status messages go to stderr so they are visible even when
-# the caller captures stdout via $(...).
+# Deploy timeout in seconds (Subnet-EVM may have longer block times)
+FORGE_TIMEOUT="${FORGE_TIMEOUT:-120}"
+
+# Run forge create and extract the deployed address from text output.
+# Does NOT use --json because forge's JSON mode may skip waiting for
+# the transaction receipt on some chains (outputs tx data without deployedTo).
+# Instead, parses the human-readable "Deployed to: 0x..." line.
 forge_create() {
     local LABEL="$1"
     shift
 
-    local OUTPUT
-    if ! OUTPUT=$(forge create "$@" --json 2>&1); then
+    local TMPFILE
+    TMPFILE=$(mktemp)
+    trap "rm -f ${TMPFILE}" RETURN
+
+    echo "         Sending transaction..." >&2
+
+    # Run forge create, showing output in real-time (tee) and capturing it.
+    # --timeout ensures we wait long enough for Subnet-EVM confirmation.
+    if ! forge create "$@" --timeout "${FORGE_TIMEOUT}" 2>&1 | tee "${TMPFILE}"; then
         echo "" >&2
         echo "Error: Failed to deploy ${LABEL}" >&2
-        echo "${OUTPUT}" >&2
         exit 1
     fi
 
-    # forge --json outputs JSON to stdout, but may mix in non-JSON lines.
-    # Extract the JSON object containing 'deployedTo'.
+    # Extract "Deployed to: 0x..." from the text output
     local ADDRESS
-    ADDRESS=$(echo "${OUTPUT}" | python3 -c "
-import json, sys
-for line in sys.stdin:
-    line = line.strip()
-    if not line:
-        continue
-    try:
-        obj = json.loads(line)
-        if 'deployedTo' in obj:
-            print(obj['deployedTo'])
-            sys.exit(0)
-    except (json.JSONDecodeError, KeyError):
-        continue
-sys.exit(1)
-" 2>/dev/null) || {
-        echo "" >&2
-        echo "Error: Could not parse deployed address for ${LABEL}" >&2
-        echo "Raw forge output:" >&2
-        echo "${OUTPUT}" >&2
-        exit 1
-    }
+    ADDRESS=$(grep -oP 'Deployed to: \K0x[0-9a-fA-F]+' "${TMPFILE}" || true)
 
     if [ -z "${ADDRESS}" ]; then
         echo "" >&2
-        echo "Error: Empty address returned for ${LABEL}" >&2
-        echo "Raw forge output:" >&2
-        echo "${OUTPUT}" >&2
+        echo "Error: Could not find 'Deployed to:' in forge output for ${LABEL}" >&2
+        echo "This may indicate the transaction was sent but not confirmed." >&2
+        echo "Check the deployer nonce and chain explorer." >&2
         exit 1
     fi
 
