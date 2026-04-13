@@ -57,7 +57,7 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 
 | Script | Description | Where to Run |
 |---|---|---|
-| `03-convert-to-l1.sh` | Execute ConvertSubnetToL1Tx (irreversible) | Operator machine |
+| `03-convert-to-l1.sh` | Execute ConvertSubnetToL1Tx via `blockchain convert` (irreversible) | Operator machine |
 | `04-init-validator-manager.sh` | Initialize ValidatorManager contract | Operator machine |
 | `05-verify-conversion.sh` | Verify conversion status and validators | Anywhere |
 
@@ -131,6 +131,19 @@ CHAIN_ID         # EVM Chain ID
 RPC_URL          # HTTPS RPC endpoint
 P_CHAIN_API      # P-Chain API endpoint
 ```
+
+## Important: `convert` vs `deploy`
+
+The conversion script uses `avalanche blockchain convert`, **not** `avalanche blockchain deploy`:
+
+| | `blockchain deploy` | `blockchain convert` |
+|---|---|---|
+| **Purpose** | Create and deploy a **new** blockchain | Convert an **existing** subnet to L1 |
+| **P-Chain Tx** | CreateSubnetTx + CreateChainTx + ConvertSubnetToL1Tx | ConvertSubnetToL1Tx only |
+| **Imported blockchains** | Rejected (`ImportedFromAPM` check) | Supported |
+| **Use case** | New subnet from scratch | Existing running subnet upgrade |
+
+The `import public` command sets `ImportedFromAPM=true` in the CLI sidecar, which causes `deploy` to fail with `"unable to deploy blockchains imported from a repo"`. The `convert` command does not have this restriction.
 
 ## References
 

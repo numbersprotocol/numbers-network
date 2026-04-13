@@ -11,8 +11,12 @@
 #   - Avalanche CLI installed (./00-install-avalanche-cli.sh)
 #   - Blockchain imported (./01-import-blockchain.sh)
 #   - Nodes backed up (./02-backup-node.sh)
-#   - Subnet owner private key available
-#   - P-Chain has sufficient AVAX balance
+#   - Subnet owner private key available (or Ledger)
+#   - P-Chain has sufficient AVAX balance (~1-2 AVAX)
+#
+# Note: This script uses 'avalanche blockchain convert' (not 'deploy').
+#       'deploy' is for new blockchains and rejects imported ones.
+#       'convert' is specifically for upgrading existing subnets to L1.
 #
 # Usage:
 #   ./03-convert-to-l1.sh                  # Convert testnet (default)
@@ -93,16 +97,19 @@ confirm_conversion() {
 execute_conversion() {
     echo ""
     echo "Step: execute_conversion"
-    echo "Running: avalanche blockchain deploy ${CHAIN_NAME} ${AVALANCHE_NETWORK_FLAG} --convert-only"
+    echo "Running: avalanche blockchain convert ${CHAIN_NAME} ${AVALANCHE_NETWORK_FLAG}"
     echo ""
     echo "The CLI will prompt you for:"
-    echo "  - Subnet owner private key"
-    echo "  - ValidatorManager type (choose PoA)"
-    echo "  - PoA owner address"
-    echo "  - Initial validator set (NodeIDs, BLS keys, weights)"
+    echo "  - Subnet owner private key (or use --key flag)"
+    echo "  - ValidatorManager type (choose PoA for permissioned management)"
+    echo "  - PoA owner address (EVM address that controls validators)"
+    echo "  - Bootstrap validators (NodeIDs, BLS keys, weights, balances)"
+    echo ""
+    echo "NOTE: Using 'avalanche blockchain convert' (not 'deploy')."
+    echo "      'deploy' creates new blockchains; 'convert' upgrades existing subnets."
     echo ""
 
-    avalanche blockchain deploy "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG} --convert-only
+    avalanche blockchain convert "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG}
 }
 
 show_next_action_reminder() {

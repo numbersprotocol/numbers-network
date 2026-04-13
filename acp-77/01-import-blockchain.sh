@@ -5,6 +5,11 @@
 # Imports the existing Numbers Network blockchain so that subsequent
 # Avalanche CLI commands can manage it.
 #
+# Note: This uses 'avalanche blockchain import public' which sets
+# ImportedFromAPM=true in the sidecar. The conversion step (03) uses
+# 'avalanche blockchain convert' (not 'deploy') because 'deploy'
+# rejects imported blockchains.
+#
 # Usage:
 #   ./01-import-blockchain.sh                  # Import testnet (default)
 #   NETWORK=mainnet ./01-import-blockchain.sh  # Import mainnet
