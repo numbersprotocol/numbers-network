@@ -30,10 +30,12 @@ ICM_SERVICES_DIR="${SCRIPT_DIR}/.icm-services"
 ICM_SERVICES_REPO="https://github.com/ava-labs/icm-services.git"
 ADDRESS_FILE="${SCRIPT_DIR}/.validator-manager-address-${NETWORK}"
 
-# Contract paths (relative to icm-services repo root, using foundry src = icm-contracts/avalanche/)
-VM_CONTRACTS_DIR="validator-manager"
-VALIDATOR_MESSAGES_SOL="${VM_CONTRACTS_DIR}/ValidatorMessages.sol:ValidatorMessages"
-VALIDATOR_MANAGER_SOL="${VM_CONTRACTS_DIR}/ValidatorManager.sol:ValidatorManager"
+# Contract paths (relative to icm-services project root)
+# foundry.toml sets src = 'icm-contracts/avalanche/', but forge create
+# requires paths relative to the project root.
+CONTRACTS_BASE="icm-contracts/avalanche/validator-manager"
+VALIDATOR_MESSAGES_SOL="${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages"
+VALIDATOR_MANAGER_SOL="${CONTRACTS_BASE}/ValidatorManager.sol:ValidatorManager"
 PROXY_SOL="lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy"
 
 # ---------- Checks ----------
@@ -62,6 +64,53 @@ check_existing_deployment() {
     fi
 }
 
+# ---------- Helpers ----------
+
+# Run forge create and extract the deployed address.
+# Shows full error output on failure instead of silently exiting.
+forge_create() {
+    local LABEL="$1"
+    shift
+
+    local OUTPUT
+    if ! OUTPUT=$(forge create "$@" --json 2>&1); then
+        echo ""
+        echo "Error: Failed to deploy ${LABEL}"
+        echo "${OUTPUT}"
+        exit 1
+    fi
+
+    # forge --json outputs JSON to stdout, but may mix in non-JSON lines.
+    # Extract the JSON object containing 'deployedTo'.
+    local ADDRESS
+    ADDRESS=$(echo "${OUTPUT}" | python3 -c "
+import json, sys
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        obj = json.loads(line)
+        if 'deployedTo' in obj:
+            print(obj['deployedTo'])
+            sys.exit(0)
+    except (json.JSONDecodeError, KeyError):
+        continue
+print('PARSE_ERROR', file=sys.stderr)
+sys.exit(1)
+" 2>&1)
+
+    if [ -z "${ADDRESS}" ] || [ "${ADDRESS}" = "PARSE_ERROR" ]; then
+        echo ""
+        echo "Error: Could not parse deployed address for ${LABEL}"
+        echo "Raw output:"
+        echo "${OUTPUT}"
+        exit 1
+    fi
+
+    echo "${ADDRESS}"
+}
+
 # ---------- Setup ----------
 
 install_foundry() {
@@ -84,13 +133,13 @@ clone_and_build() {
         echo "  icm-services already present at ${ICM_SERVICES_DIR}"
     else
         echo "  Cloning ava-labs/icm-services..."
-        git clone --depth 1 "${ICM_SERVICES_REPO}" "${ICM_SERVICES_DIR}"
+        git clone "${ICM_SERVICES_REPO}" "${ICM_SERVICES_DIR}"
     fi
 
     cd "${ICM_SERVICES_DIR}"
 
-    echo "  Installing dependencies..."
-    git submodule update --init --recursive 2>/dev/null || true
+    echo "  Installing submodules (OpenZeppelin, forge-std, etc.)..."
+    git submodule update --init --recursive
 
     echo "  Building contracts..."
     forge build
@@ -103,49 +152,40 @@ deploy_contracts() {
     echo ""
     echo "Step: deploy_contracts"
     echo "  RPC: ${RPC_URL}"
-    echo "  Deployer: $(cast wallet address "${DEPLOYER_KEY}" 2>/dev/null || echo 'unknown')"
+
+    DEPLOYER_ADDRESS=$(cast wallet address "${DEPLOYER_KEY}")
+    echo "  Deployer: ${DEPLOYER_ADDRESS}"
     echo ""
 
     cd "${ICM_SERVICES_DIR}"
 
     # 1. Deploy ValidatorMessages library
     echo "  [1/3] Deploying ValidatorMessages library..."
-    LIB_RESULT=$(forge create \
+    LIB_ADDRESS=$(forge_create "ValidatorMessages" \
         "${VALIDATOR_MESSAGES_SOL}" \
         --rpc-url "${RPC_URL}" \
-        --private-key "${DEPLOYER_KEY}" \
-        --json 2>/dev/null)
-
-    LIB_ADDRESS=$(echo "${LIB_RESULT}" | python3 -c "import json,sys; print(json.load(sys.stdin)['deployedTo'])")
+        --private-key "${DEPLOYER_KEY}")
     echo "         ValidatorMessages: ${LIB_ADDRESS}"
 
     # 2. Deploy ValidatorManager implementation (linked with library)
     echo "  [2/3] Deploying ValidatorManager implementation..."
-    IMPL_RESULT=$(forge create \
+    IMPL_ADDRESS=$(forge_create "ValidatorManager" \
         "${VALIDATOR_MANAGER_SOL}" \
         --rpc-url "${RPC_URL}" \
         --private-key "${DEPLOYER_KEY}" \
-        --libraries "${VM_CONTRACTS_DIR}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}" \
-        --json 2>/dev/null)
-
-    IMPL_ADDRESS=$(echo "${IMPL_RESULT}" | python3 -c "import json,sys; print(json.load(sys.stdin)['deployedTo'])")
+        --libraries "${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}")
     echo "         ValidatorManager:  ${IMPL_ADDRESS}"
 
     # 3. Deploy TransparentUpgradeableProxy (OpenZeppelin v5)
     #    Constructor: (logic, initialOwner, data)
     #    - initialOwner: becomes the owner of the auto-deployed ProxyAdmin
     #    - data: empty bytes (initialization done later by initValidatorManager)
-    DEPLOYER_ADDRESS=$(cast wallet address "${DEPLOYER_KEY}")
-
     echo "  [3/3] Deploying TransparentUpgradeableProxy..."
-    PROXY_RESULT=$(forge create \
+    PROXY_ADDRESS=$(forge_create "TransparentUpgradeableProxy" \
         "${PROXY_SOL}" \
         --constructor-args "${IMPL_ADDRESS}" "${DEPLOYER_ADDRESS}" "0x" \
         --rpc-url "${RPC_URL}" \
-        --private-key "${DEPLOYER_KEY}" \
-        --json 2>/dev/null)
-
-    PROXY_ADDRESS=$(echo "${PROXY_RESULT}" | python3 -c "import json,sys; print(json.load(sys.stdin)['deployedTo'])")
+        --private-key "${DEPLOYER_KEY}")
     echo "         Proxy:             ${PROXY_ADDRESS}"
 
     # Save the proxy address for 03-convert-to-l1.sh
