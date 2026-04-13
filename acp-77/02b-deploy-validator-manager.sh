@@ -69,40 +69,71 @@ check_existing_deployment() {
 # Deploy timeout in seconds (Subnet-EVM may have longer block times)
 FORGE_TIMEOUT="${FORGE_TIMEOUT:-120}"
 
-# Run forge create and extract the deployed address from text output.
-# Does NOT use --json because forge's JSON mode may skip waiting for
-# the transaction receipt on some chains (outputs tx data without deployedTo).
-# Instead, parses the human-readable "Deployed to: 0x..." line.
+# Deploy a contract and return its address.
+#
+# Instead of parsing forge's text/JSON output (which is unreliable across
+# versions and pipe-buffering scenarios), this function:
+#   1. Records the deployer nonce BEFORE the transaction
+#   2. Runs forge create (output goes directly to terminal via stderr)
+#   3. Checks that the nonce incremented (tx was mined)
+#   4. Computes the contract address mathematically (CREATE = keccak(deployer, nonce))
+#   5. Verifies contract code exists at the computed address
 forge_create() {
     local LABEL="$1"
     shift
 
-    local TMPFILE
-    TMPFILE=$(mktemp)
-    trap "rm -f ${TMPFILE}" RETURN
+    # 1. Get deployer nonce before deployment
+    local NONCE_BEFORE
+    NONCE_BEFORE=$(cast nonce "${DEPLOYER_ADDRESS}" --rpc-url "${RPC_URL}")
+    echo "         Nonce before: ${NONCE_BEFORE}" >&2
 
+    # 2. Run forge create — output goes to stderr (visible to user),
+    #    only the final address goes to stdout (captured by caller).
     echo "         Sending transaction..." >&2
-
-    # Run forge create, showing output in real-time (tee) and capturing it.
-    # --timeout ensures we wait long enough for Subnet-EVM confirmation.
-    if ! forge create "$@" --timeout "${FORGE_TIMEOUT}" 2>&1 | tee "${TMPFILE}"; then
+    forge create "$@" --timeout "${FORGE_TIMEOUT}" >&2 || {
         echo "" >&2
-        echo "Error: Failed to deploy ${LABEL}" >&2
+        echo "Warning: forge create exited with non-zero for ${LABEL}" >&2
+        echo "Checking if transaction was mined anyway..." >&2
+    }
+
+    # 3. Check nonce incremented (transaction was mined)
+    local NONCE_AFTER
+    NONCE_AFTER=$(cast nonce "${DEPLOYER_ADDRESS}" --rpc-url "${RPC_URL}")
+    echo "         Nonce after:  ${NONCE_AFTER}" >&2
+
+    if [ "${NONCE_BEFORE}" = "${NONCE_AFTER}" ]; then
+        echo "" >&2
+        echo "Error: Transaction for ${LABEL} was not mined (nonce unchanged: ${NONCE_BEFORE})" >&2
+        echo "Possible causes:" >&2
+        echo "  - Insufficient tokens on deployer for gas" >&2
+        echo "  - RPC endpoint not responding" >&2
+        echo "  - Chain not producing blocks" >&2
         exit 1
     fi
 
-    # Extract "Deployed to: 0x..." from the text output (POSIX-compatible, works on macOS/Linux)
-    local ADDRESS
-    ADDRESS=$(sed -n 's/.*Deployed to: \(0x[0-9a-fA-F]*\).*/\1/p' "${TMPFILE}" | head -1)
+    # 4. Compute contract address from deployer + nonce (CREATE opcode formula)
+    local COMPUTE_OUTPUT ADDRESS
+    COMPUTE_OUTPUT=$(cast compute-address "${DEPLOYER_ADDRESS}" --nonce "${NONCE_BEFORE}")
+    ADDRESS=$(echo "${COMPUTE_OUTPUT}" | sed -n 's/.*: \(0x[0-9a-fA-F]*\).*/\1/p' | head -1)
 
     if [ -z "${ADDRESS}" ]; then
         echo "" >&2
-        echo "Error: Could not find 'Deployed to:' in forge output for ${LABEL}" >&2
-        echo "This may indicate the transaction was sent but not confirmed." >&2
-        echo "Check the deployer nonce and chain explorer." >&2
+        echo "Error: Could not compute address for ${LABEL}" >&2
+        echo "cast output: ${COMPUTE_OUTPUT}" >&2
         exit 1
     fi
 
+    # 5. Verify contract code exists at the computed address
+    local CODE
+    CODE=$(cast code "${ADDRESS}" --rpc-url "${RPC_URL}")
+    if [ "${CODE}" = "0x" ] || [ -z "${CODE}" ]; then
+        echo "" >&2
+        echo "Error: No contract code at ${ADDRESS} for ${LABEL}" >&2
+        echo "Nonce incremented but no code found — unexpected state." >&2
+        exit 1
+    fi
+
+    echo "         Verified: ${ADDRESS}" >&2
     # Only the address goes to stdout (captured by caller)
     echo "${ADDRESS}"
 }
