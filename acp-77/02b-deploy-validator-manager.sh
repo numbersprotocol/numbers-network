@@ -91,9 +91,9 @@ forge_create() {
         exit 1
     fi
 
-    # Extract "Deployed to: 0x..." from the text output
+    # Extract "Deployed to: 0x..." from the text output (POSIX-compatible, works on macOS/Linux)
     local ADDRESS
-    ADDRESS=$(grep -oP 'Deployed to: \K0x[0-9a-fA-F]+' "${TMPFILE}" || true)
+    ADDRESS=$(sed -n 's/.*Deployed to: \(0x[0-9a-fA-F]*\).*/\1/p' "${TMPFILE}" | head -1)
 
     if [ -z "${ADDRESS}" ]; then
         echo "" >&2
