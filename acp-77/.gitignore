@@ -1,0 +1,6 @@
+# Cloned dependency repos
+.icm-services/
+.icm-contracts/
+
+# Deployed contract addresses (machine-specific)
+.validator-manager-address-*

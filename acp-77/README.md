@@ -29,7 +29,9 @@ All scripts default to **testnet**. Set `NETWORK=mainnet` to target mainnet.
 ## Prerequisites
 
 - [Avalanche CLI](https://build.avax.network/docs/tooling/avalanche-cli/install-avalanche-cli)
+- [Foundry](https://getfoundry.sh/) (for deploying ValidatorManager; `02b` can auto-install)
 - Subnet owner private key
+- Deployer private key with tokens on the L1 chain (for ValidatorManager deployment gas)
 - AVAX on P-Chain (~1-2 AVAX for conversion + validator fees)
 - `python3`, `curl`, `jq` on the operator machine
 
@@ -57,6 +59,7 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 
 | Script | Description | Where to Run |
 |---|---|---|
+| `02b-deploy-validator-manager.sh` | Deploy ValidatorManager contract on-chain (requires Foundry) | Operator machine |
 | `03-convert-to-l1.sh` | Execute ConvertSubnetToL1Tx via `blockchain convert` (irreversible) | Operator machine |
 | `04-init-validator-manager.sh` | Initialize ValidatorManager contract | Operator machine |
 | `05-verify-conversion.sh` | Verify conversion status and validators | Anywhere |
@@ -88,10 +91,19 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 ./02-backup-node.sh
 ```
 
-### 3. Convert (Operator Machine)
+### 3. Deploy ValidatorManager (Operator Machine)
+
+```bash
+# Deploy the ValidatorManager contract on the L1 chain
+# Requires Foundry and a private key with tokens for gas
+DEPLOYER_KEY=0xYOUR_PRIVATE_KEY ./02b-deploy-validator-manager.sh
+```
+
+### 4. Convert (Operator Machine)
 
 ```bash
 # Convert subnet to L1 (IRREVERSIBLE)
+# Uses the ValidatorManager address from step 3 automatically
 ./03-convert-to-l1.sh
 
 # Initialize ValidatorManager contract
@@ -101,7 +113,7 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 ./05-verify-conversion.sh
 ```
 
-### 4. Manage Validators (Operator Machine)
+### 5. Manage Validators (Operator Machine)
 
 ```bash
 # Add a new validator
@@ -111,7 +123,7 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 ./07-remove-validator.sh NodeID-XXXXX
 ```
 
-### 5. Clean Up Disk (On Target Node)
+### 6. Clean Up Disk (On Target Node)
 
 ```bash
 # Stop, clean DB, restart (node will re-sync)

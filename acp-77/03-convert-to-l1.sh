@@ -11,6 +11,7 @@
 #   - Avalanche CLI installed (./00-install-avalanche-cli.sh)
 #   - Blockchain imported (./01-import-blockchain.sh)
 #   - Nodes backed up (./02-backup-node.sh)
+#   - ValidatorManager deployed (./02b-deploy-validator-manager.sh)
 #   - Subnet owner private key available (or Ledger)
 #   - P-Chain has sufficient AVAX balance (~1-2 AVAX)
 #
@@ -61,6 +62,18 @@ check_prerequisites() {
     IS_PERMISSIONED=$(echo "${SUBNET_RESULT}" | python3 -c "import json,sys; print(json.load(sys.stdin)['result']['isPermissioned'])" 2>/dev/null || echo "unknown")
     echo "  isPermissioned: ${IS_PERMISSIONED}"
 
+    # Check ValidatorManager deployment
+    ADDRESS_FILE="${SCRIPT_DIR}/.validator-manager-address-${NETWORK}"
+    if [ -f "${ADDRESS_FILE}" ]; then
+        VM_ADDRESS=$(cat "${ADDRESS_FILE}")
+        echo "  ValidatorManager: ${VM_ADDRESS} (from 02b-deploy-validator-manager.sh)"
+    else
+        echo "  ValidatorManager: not deployed yet"
+        echo ""
+        echo "  Hint: Run ./02b-deploy-validator-manager.sh first to deploy the contract."
+        echo "  Or you can manually enter the address when prompted by the CLI."
+    fi
+
     if [ "${IS_PERMISSIONED}" = "False" ] || [ "${IS_PERMISSIONED}" = "false" ]; then
         echo ""
         echo "Warning: Subnet is already converted to L1. No conversion needed."
@@ -100,6 +113,7 @@ execute_conversion() {
     echo "Running: avalanche blockchain convert ${CHAIN_NAME} ${AVALANCHE_NETWORK_FLAG}"
     echo ""
     echo "The CLI will prompt you for:"
+    echo "  - ValidatorManager address (use address from 02b-deploy-validator-manager.sh)"
     echo "  - Subnet owner private key (or use --key flag)"
     echo "  - ValidatorManager type (choose PoA for permissioned management)"
     echo "  - PoA owner address (EVM address that controls validators)"
@@ -109,7 +123,17 @@ execute_conversion() {
     echo "      'deploy' creates new blockchains; 'convert' upgrades existing subnets."
     echo ""
 
-    avalanche blockchain convert "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG}
+    # Pass --validator-manager-address if saved from 02b
+    ADDRESS_FILE="${SCRIPT_DIR}/.validator-manager-address-${NETWORK}"
+    EXTRA_FLAGS=""
+    if [ -f "${ADDRESS_FILE}" ]; then
+        VM_ADDRESS=$(cat "${ADDRESS_FILE}")
+        echo "Using ValidatorManager address: ${VM_ADDRESS}"
+        EXTRA_FLAGS="--validator-manager-address ${VM_ADDRESS}"
+    fi
+
+    # shellcheck disable=SC2086
+    avalanche blockchain convert "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG} ${EXTRA_FLAGS}
 }
 
 show_next_action_reminder() {
