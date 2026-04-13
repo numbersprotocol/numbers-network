@@ -67,16 +67,17 @@ check_existing_deployment() {
 # ---------- Helpers ----------
 
 # Run forge create and extract the deployed address.
-# Shows full error output on failure instead of silently exiting.
+# All error/status messages go to stderr so they are visible even when
+# the caller captures stdout via $(...).
 forge_create() {
     local LABEL="$1"
     shift
 
     local OUTPUT
     if ! OUTPUT=$(forge create "$@" --json 2>&1); then
-        echo ""
-        echo "Error: Failed to deploy ${LABEL}"
-        echo "${OUTPUT}"
+        echo "" >&2
+        echo "Error: Failed to deploy ${LABEL}" >&2
+        echo "${OUTPUT}" >&2
         exit 1
     fi
 
@@ -96,18 +97,24 @@ for line in sys.stdin:
             sys.exit(0)
     except (json.JSONDecodeError, KeyError):
         continue
-print('PARSE_ERROR', file=sys.stderr)
 sys.exit(1)
-" 2>&1)
+" 2>/dev/null) || {
+        echo "" >&2
+        echo "Error: Could not parse deployed address for ${LABEL}" >&2
+        echo "Raw forge output:" >&2
+        echo "${OUTPUT}" >&2
+        exit 1
+    }
 
-    if [ -z "${ADDRESS}" ] || [ "${ADDRESS}" = "PARSE_ERROR" ]; then
-        echo ""
-        echo "Error: Could not parse deployed address for ${LABEL}"
-        echo "Raw output:"
-        echo "${OUTPUT}"
+    if [ -z "${ADDRESS}" ]; then
+        echo "" >&2
+        echo "Error: Empty address returned for ${LABEL}" >&2
+        echo "Raw forge output:" >&2
+        echo "${OUTPUT}" >&2
         exit 1
     fi
 
+    # Only the address goes to stdout (captured by caller)
     echo "${ADDRESS}"
 }
 
