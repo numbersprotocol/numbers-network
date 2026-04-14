@@ -194,17 +194,16 @@ deploy_contracts() {
         --private-key "${DEPLOYER_KEY}")
     echo "         ValidatorMessages: ${LIB_ADDRESS}"
 
-    # 2. Rebuild with ValidatorMessages linked at compile time.
-    #    Newer Foundry versions don't support --libraries in forge create;
-    #    the library must be linked during compilation instead.
+    # 2. Set FOUNDRY_LIBRARIES so forge create links the library at compile time.
+    #    forge create recompiles from scratch, ignoring forge build cache.
+    #    The env var ensures the library address is embedded in the bytecode.
+    export FOUNDRY_LIBRARIES="${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}"
     echo ""
-    echo "  Rebuilding with ValidatorMessages linked at ${LIB_ADDRESS}..."
-    forge build \
-        --libraries "${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}"
-    echo "  Rebuild complete."
+    echo "  [2/4] Linking ValidatorMessages at ${LIB_ADDRESS}"
+    echo "         FOUNDRY_LIBRARIES=${FOUNDRY_LIBRARIES}"
     echo ""
 
-    # 3. Deploy ValidatorManager implementation (library already linked in bytecode)
+    # 3. Deploy ValidatorManager implementation (library linked via env var)
     #    Constructor arg: ICMInitializable.Disallowed (1) — disables direct
     #    initialization on the implementation. The proxy can still call
     #    initialize() via delegatecall (proxy has its own storage).
