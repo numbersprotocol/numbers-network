@@ -89,8 +89,10 @@ forge_create() {
 
     # 2. Run forge create — output goes to stderr (visible to user),
     #    only the final address goes to stdout (captured by caller).
+    #    --broadcast and --timeout MUST come before $@ because
+    #    --constructor-args is variadic and consumes all trailing tokens.
     echo "         Sending transaction..." >&2
-    forge create "$@" --broadcast --timeout "${FORGE_TIMEOUT}" >&2 || {
+    forge create --broadcast --timeout "${FORGE_TIMEOUT}" "$@" >&2 || {
         echo "" >&2
         echo "Warning: forge create exited with non-zero for ${LABEL}" >&2
         echo "Checking if transaction was mined anyway..." >&2
