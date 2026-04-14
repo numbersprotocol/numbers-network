@@ -187,31 +187,40 @@ deploy_contracts() {
     cd "${ICM_SERVICES_DIR}"
 
     # 1. Deploy ValidatorMessages library
-    echo "  [1/3] Deploying ValidatorMessages library..."
+    echo "  [1/4] Deploying ValidatorMessages library..."
     LIB_ADDRESS=$(forge_create "ValidatorMessages" \
         "${VALIDATOR_MESSAGES_SOL}" \
         --rpc-url "${RPC_URL}" \
         --private-key "${DEPLOYER_KEY}")
     echo "         ValidatorMessages: ${LIB_ADDRESS}"
 
-    # 2. Deploy ValidatorManager implementation (linked with library)
+    # 2. Rebuild with ValidatorMessages linked at compile time.
+    #    Newer Foundry versions don't support --libraries in forge create;
+    #    the library must be linked during compilation instead.
+    echo ""
+    echo "  Rebuilding with ValidatorMessages linked at ${LIB_ADDRESS}..."
+    forge build \
+        --libraries "${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}"
+    echo "  Rebuild complete."
+    echo ""
+
+    # 3. Deploy ValidatorManager implementation (library already linked in bytecode)
     #    Constructor arg: ICMInitializable.Disallowed (1) — disables direct
     #    initialization on the implementation. The proxy can still call
     #    initialize() via delegatecall (proxy has its own storage).
-    echo "  [2/3] Deploying ValidatorManager implementation..."
+    echo "  [3/4] Deploying ValidatorManager implementation..."
     IMPL_ADDRESS=$(forge_create "ValidatorManager" \
         "${VALIDATOR_MANAGER_SOL}" \
         --rpc-url "${RPC_URL}" \
         --private-key "${DEPLOYER_KEY}" \
-        --constructor-args 1 \
-        --libraries "${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}")
+        --constructor-args 1)
     echo "         ValidatorManager:  ${IMPL_ADDRESS}"
 
     # 3. Deploy TransparentUpgradeableProxy (OpenZeppelin v5)
     #    Constructor: (logic, initialOwner, data)
     #    - initialOwner: becomes the owner of the auto-deployed ProxyAdmin
     #    - data: empty bytes (initialization done later by initValidatorManager)
-    echo "  [3/3] Deploying TransparentUpgradeableProxy..."
+    echo "  [4/4] Deploying TransparentUpgradeableProxy..."
     PROXY_ADDRESS=$(forge_create "TransparentUpgradeableProxy" \
         "${PROXY_SOL}" \
         --constructor-args "${IMPL_ADDRESS}" "${DEPLOYER_ADDRESS}" "0x" \
