@@ -221,12 +221,13 @@ deploy_contracts() {
     #    Constructor: (logic, initialOwner, data)
     #    - initialOwner: becomes the owner of the auto-deployed ProxyAdmin
     #    - data: empty bytes (initialization done later by initValidatorManager)
+    #    NOTE: --constructor-args MUST be last (variadic, consumes all trailing tokens)
     echo "  [4/4] Deploying TransparentUpgradeableProxy..."
     PROXY_ADDRESS=$(forge_create "TransparentUpgradeableProxy" \
         "${PROXY_SOL}" \
-        --constructor-args "${IMPL_ADDRESS}" "${DEPLOYER_ADDRESS}" "0x" \
         --rpc-url "${RPC_URL}" \
-        --private-key "${DEPLOYER_KEY}")
+        --private-key "${DEPLOYER_KEY}" \
+        --constructor-args "${IMPL_ADDRESS}" "${DEPLOYER_ADDRESS}" "0x")
     echo "         Proxy:             ${PROXY_ADDRESS}"
 
     # Save the proxy address for 03-convert-to-l1.sh
