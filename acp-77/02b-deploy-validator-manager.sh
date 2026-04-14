@@ -195,11 +195,15 @@ deploy_contracts() {
     echo "         ValidatorMessages: ${LIB_ADDRESS}"
 
     # 2. Deploy ValidatorManager implementation (linked with library)
+    #    Constructor arg: ICMInitializable.Disallowed (1) — disables direct
+    #    initialization on the implementation. The proxy can still call
+    #    initialize() via delegatecall (proxy has its own storage).
     echo "  [2/3] Deploying ValidatorManager implementation..."
     IMPL_ADDRESS=$(forge_create "ValidatorManager" \
         "${VALIDATOR_MANAGER_SOL}" \
         --rpc-url "${RPC_URL}" \
         --private-key "${DEPLOYER_KEY}" \
+        --constructor-args 1 \
         --libraries "${CONTRACTS_BASE}/ValidatorMessages.sol:ValidatorMessages:${LIB_ADDRESS}")
     echo "         ValidatorManager:  ${IMPL_ADDRESS}"
 
