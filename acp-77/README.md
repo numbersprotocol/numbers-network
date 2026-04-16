@@ -104,10 +104,18 @@ DEPLOYER_KEY=0xYOUR_PRIVATE_KEY ./02b-deploy-validator-manager.sh
 ```bash
 # Import the private key that will control the ValidatorManager (add/remove validators).
 # The CLI ships with only "ewoq" (a test-only key) — you must import your own key.
-avalanche key import poa-controller --key 0xYOUR_PRIVATE_KEY
+
+# Save your hex private key (without 0x prefix) to a temp file
+echo 'YOUR_PRIVATE_KEY_HEX' > /tmp/poa-controller.pk
+
+# Import into Avalanche CLI
+avalanche key create poa-controller --file /tmp/poa-controller.pk
 
 # Verify import
 avalanche key list
+
+# Clean up
+rm /tmp/poa-controller.pk
 ```
 
 ### 5. Convert (Operator Machine)
