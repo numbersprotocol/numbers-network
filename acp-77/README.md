@@ -99,7 +99,18 @@ NETWORK=mainnet ./00-install-avalanche-cli.sh
 DEPLOYER_KEY=0xYOUR_PRIVATE_KEY ./02b-deploy-validator-manager.sh
 ```
 
-### 4. Convert (Operator Machine)
+### 4. Import PoA Controller Key (Operator Machine)
+
+```bash
+# Import the private key that will control the ValidatorManager (add/remove validators).
+# The CLI ships with only "ewoq" (a test-only key) — you must import your own key.
+avalanche key import poa-controller --key 0xYOUR_PRIVATE_KEY
+
+# Verify import
+avalanche key list
+```
+
+### 5. Convert (Operator Machine)
 
 ```bash
 # Convert subnet to L1 (IRREVERSIBLE)
@@ -113,7 +124,7 @@ DEPLOYER_KEY=0xYOUR_PRIVATE_KEY ./02b-deploy-validator-manager.sh
 ./05-verify-conversion.sh
 ```
 
-### 5. Manage Validators (Operator Machine)
+### 6. Manage Validators (Operator Machine)
 
 ```bash
 # Add a new validator
@@ -123,7 +134,7 @@ DEPLOYER_KEY=0xYOUR_PRIVATE_KEY ./02b-deploy-validator-manager.sh
 ./07-remove-validator.sh NodeID-XXXXX
 ```
 
-### 6. Clean Up Disk (On Target Node)
+### 7. Clean Up Disk (On Target Node)
 
 ```bash
 # Stop, clean DB, restart (node will re-sync)
