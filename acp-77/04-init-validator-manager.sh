@@ -51,9 +51,21 @@ check_deployer_key() {
 }
 
 check_cast() {
+    # Add Foundry bin to PATH if installed but not in PATH
+    if ! command -v cast &> /dev/null && [ -d "${HOME}/.foundry/bin" ]; then
+        export PATH="${HOME}/.foundry/bin:${PATH}"
+    fi
+
     if ! command -v cast &> /dev/null; then
-        echo "Error: 'cast' (Foundry) not found. Install Foundry first:"
-        echo "  curl -L https://foundry.paradigm.xyz | bash && foundryup"
+        echo "  Foundry not found. Installing..."
+        curl -L https://foundry.paradigm.xyz | bash
+        export PATH="${HOME}/.foundry/bin:${PATH}"
+        foundryup
+    fi
+
+    if ! command -v cast &> /dev/null; then
+        echo "Error: 'cast' (Foundry) installation failed."
+        echo "  Try manually: curl -L https://foundry.paradigm.xyz | bash && foundryup"
         exit 1
     fi
 }
