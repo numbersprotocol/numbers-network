@@ -86,24 +86,29 @@ check_prerequisites() {
 # Ensure the user has a key imported into Avalanche CLI for PoA controller.
 # The CLI ships with only "ewoq" (a well-known test-only key). For real
 # networks, the user must import their own key first.
+#
+# Note: We check the key directory directly instead of running
+# "avalanche key list", because that command may hang waiting for
+# interactive network selection (to query balances).
 ensure_cli_key() {
     echo ""
     echo "Step: ensure_cli_key"
     echo "  Checking Avalanche CLI stored keys..."
 
-    # List stored keys (suppress header lines, extract key names)
-    KEY_LIST=$(avalanche key list 2>/dev/null || true)
-    echo "${KEY_LIST}" | head -20
+    CLI_KEY_DIR="${HOME}/.avalanche-cli/key"
 
-    # Check if any key other than ewoq exists
+    # Check if any key file other than ewoq exists
     HAS_CUSTOM_KEY=false
-    while IFS= read -r line; do
-        # Key names appear after the table header; skip ewoq
-        if echo "${line}" | grep -q "^|" && ! echo "${line}" | grep -qi "ewoq" && ! echo "${line}" | grep -qi "NAME"; then
-            HAS_CUSTOM_KEY=true
-            break
-        fi
-    done <<< "${KEY_LIST}"
+    if [ -d "${CLI_KEY_DIR}" ]; then
+        for keyfile in "${CLI_KEY_DIR}"/*.pk; do
+            [ -f "${keyfile}" ] || continue
+            KEYNAME=$(basename "${keyfile}" .pk)
+            if [ "${KEYNAME}" != "ewoq" ]; then
+                echo "  Found key: ${KEYNAME}"
+                HAS_CUSTOM_KEY=true
+            fi
+        done
+    fi
 
     if [ "${HAS_CUSTOM_KEY}" = "false" ]; then
         echo ""
