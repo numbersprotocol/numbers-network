@@ -14,6 +14,7 @@
 #   - ValidatorManager deployed (./02b-deploy-validator-manager.sh)
 #   - Subnet owner private key available (or Ledger)
 #   - P-Chain has sufficient AVAX balance (~1-2 AVAX)
+#   - PoA controller key imported into Avalanche CLI (this script will guide you)
 #
 # Note: This script uses 'avalanche blockchain convert' (not 'deploy').
 #       'deploy' is for new blockchains and rejects imported ones.
@@ -82,6 +83,56 @@ check_prerequisites() {
     fi
 }
 
+# Ensure the user has a key imported into Avalanche CLI for PoA controller.
+# The CLI ships with only "ewoq" (a well-known test-only key). For real
+# networks, the user must import their own key first.
+ensure_cli_key() {
+    echo ""
+    echo "Step: ensure_cli_key"
+    echo "  Checking Avalanche CLI stored keys..."
+
+    # List stored keys (suppress header lines, extract key names)
+    KEY_LIST=$(avalanche key list 2>/dev/null || true)
+    echo "${KEY_LIST}" | head -20
+
+    # Check if any key other than ewoq exists
+    HAS_CUSTOM_KEY=false
+    while IFS= read -r line; do
+        # Key names appear after the table header; skip ewoq
+        if echo "${line}" | grep -q "^|" && ! echo "${line}" | grep -qi "ewoq" && ! echo "${line}" | grep -qi "NAME"; then
+            HAS_CUSTOM_KEY=true
+            break
+        fi
+    done <<< "${KEY_LIST}"
+
+    if [ "${HAS_CUSTOM_KEY}" = "false" ]; then
+        echo ""
+        echo "============================================"
+        echo "  Key Import Required"
+        echo "============================================"
+        echo ""
+        echo "  The CLI only has the built-in 'ewoq' key, which is a well-known"
+        echo "  test key (0x8db97C...BF52FC) and must NOT be used on real networks."
+        echo ""
+        echo "  You need to import the private key that will control the PoA"
+        echo "  ValidatorManager (add/remove validators)."
+        echo ""
+        echo "  Run one of the following commands:"
+        echo ""
+        echo "    # Import from hex private key"
+        echo "    avalanche key import poa-controller --key 0xYOUR_PRIVATE_KEY"
+        echo ""
+        echo "    # Or import from a key file"
+        echo "    avalanche key import poa-controller --file /path/to/key.json"
+        echo ""
+        echo "  Then re-run this script."
+        echo "============================================"
+        exit 1
+    fi
+
+    echo "  Custom key found. You can select it when prompted by the CLI."
+}
+
 confirm_conversion() {
     echo ""
     echo "============================================"
@@ -147,6 +198,7 @@ main() {
     show_configs
     echo ""
     check_prerequisites
+    ensure_cli_key
     confirm_conversion
     execute_conversion
     show_next_action_reminder
