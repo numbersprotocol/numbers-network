@@ -131,13 +131,13 @@ for v in validators:
 "
 
     echo "  ============================================"
-    echo "  Existing Validators Must Be Removed"
+    echo "  WARNING: Existing Subnet Validators Detected"
     echo "  ============================================"
     echo ""
     echo "  ConvertSubnetToL1Tx will fail with 'conflicting subnetID + nodeID pair'"
     echo "  if any bootstrap validator NodeID is already an active subnet validator."
     echo ""
-    echo "  Remove each validator before converting:"
+    echo "  If you have NOT removed them yet, run:"
     echo ""
 
     # Extract NodeIDs and show removal commands
@@ -150,9 +150,15 @@ for v in validators:
 "
 
     echo ""
-    echo "  After removing all validators, re-run this script."
+    echo "  If you have ALREADY removed them, the P-Chain API may have a"
+    echo "  propagation delay. You can proceed anyway."
     echo "  ============================================"
-    exit 1
+    echo ""
+    read -p "  Continue with conversion? (y/N): " CONTINUE
+    if [ "${CONTINUE}" != "y" ] && [ "${CONTINUE}" != "Y" ]; then
+        echo "  Aborted. Remove validators and re-run this script."
+        exit 1
+    fi
 }
 
 # Ensure the user has a key imported into Avalanche CLI for PoA controller.
