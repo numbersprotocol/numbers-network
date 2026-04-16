@@ -83,6 +83,78 @@ check_prerequisites() {
     fi
 }
 
+# Check for existing subnet validators that would conflict with ConvertSubnetToL1Tx.
+# The same NodeID cannot be both a subnet validator and an L1 bootstrap validator.
+# Existing validators must be removed before conversion.
+check_existing_validators() {
+    echo ""
+    echo "Step: check_existing_validators"
+    echo "  Checking existing subnet validators..."
+
+    VALIDATORS_RESULT=$(curl -s -X POST --data "{
+        \"jsonrpc\":\"2.0\",
+        \"method\":\"platform.getCurrentValidators\",
+        \"params\":{\"subnetID\":\"${SUBNET_ID}\"},
+        \"id\":1
+    }" -H 'Content-Type: application/json' "${P_CHAIN_API}")
+
+    VALIDATOR_COUNT=$(echo "${VALIDATORS_RESULT}" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+validators = data.get('result', {}).get('validators', [])
+print(len(validators))
+" 2>/dev/null || echo "0")
+
+    if [ "${VALIDATOR_COUNT}" = "0" ]; then
+        echo "  No existing subnet validators. Ready to convert."
+        return
+    fi
+
+    # Display existing validators
+    echo ""
+    echo "${VALIDATORS_RESULT}" | python3 -c "
+import json, sys
+from datetime import datetime, timezone
+data = json.load(sys.stdin)
+validators = data.get('result', {}).get('validators', [])
+print(f'  Found {len(validators)} existing subnet validator(s):')
+print()
+for v in validators:
+    end_ts = int(v['endTime'])
+    end_dt = datetime.fromtimestamp(end_ts, tz=timezone.utc)
+    now = datetime.now(tz=timezone.utc)
+    remaining = end_dt - now
+    print(f'    NodeID:   {v[\"nodeID\"]}')
+    print(f'    Weight:   {v[\"weight\"]}')
+    print(f'    End time: {end_dt.strftime(\"%Y-%m-%d %H:%M UTC\")} ({remaining.days} days remaining)')
+    print()
+"
+
+    echo "  ============================================"
+    echo "  Existing Validators Must Be Removed"
+    echo "  ============================================"
+    echo ""
+    echo "  ConvertSubnetToL1Tx will fail with 'conflicting subnetID + nodeID pair'"
+    echo "  if any bootstrap validator NodeID is already an active subnet validator."
+    echo ""
+    echo "  Remove each validator before converting:"
+    echo ""
+
+    # Extract NodeIDs and show removal commands
+    echo "${VALIDATORS_RESULT}" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+validators = data.get('result', {}).get('validators', [])
+for v in validators:
+    print(f'    avalanche blockchain removeValidator {\"${CHAIN_NAME}\"} ${AVALANCHE_NETWORK_FLAG} --node-id {v[\"nodeID\"]}')
+"
+
+    echo ""
+    echo "  After removing all validators, re-run this script."
+    echo "  ============================================"
+    exit 1
+}
+
 # Ensure the user has a key imported into Avalanche CLI for PoA controller.
 # The CLI ships with only "ewoq" (a well-known test-only key). For real
 # networks, the user must import their own key first.
@@ -209,6 +281,7 @@ main() {
     show_configs
     echo ""
     check_prerequisites
+    check_existing_validators
     ensure_cli_key
     confirm_conversion
     execute_conversion
