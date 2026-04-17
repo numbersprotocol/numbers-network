@@ -205,6 +205,11 @@ get_nonce() {
 #   - pushing a block to force baseFee decay (leave $2 empty)
 # $1 = gas price (wei integer or "<N>gwei")
 # $2 = optional explicit nonce
+#
+# Uses EIP-1559 params (--gas-price as maxFeePerGas, --priority-gas-price
+# as maxPriorityFeePerGas) set to the SAME value, which makes the tx look
+# like a strict fixed-price tx and ensures replacement rules are satisfied
+# against EITHER legacy or 1559 pending txs.
 send_self_tx() {
     local GAS_PRICE="$1"
     local EXPLICIT_NONCE="$2"
@@ -213,12 +218,14 @@ send_self_tx() {
             --value 0 \
             --nonce "${EXPLICIT_NONCE}" \
             --gas-price "${GAS_PRICE}" \
+            --priority-gas-price "${GAS_PRICE}" \
             --rpc-url "${RPC_URL}" \
             --private-key "${DEPLOYER_KEY}"
     else
         cast send "${DEPLOYER_ADDR}" \
             --value 0 \
             --gas-price "${GAS_PRICE}" \
+            --priority-gas-price "${GAS_PRICE}" \
             --rpc-url "${RPC_URL}" \
             --private-key "${DEPLOYER_KEY}"
     fi
@@ -243,32 +250,62 @@ recover_stuck_tx() {
     local STUCK=${LATEST}
     local BASE_FEE_WEI
     BASE_FEE_WEI=$(get_base_fee_wei)
-    # Replacement needs >10% bump over existing tx; we don't know CLI's
-    # exact gas price, but we know it was <= current baseFee (else it
-    # would have mined). Use 3x baseFee to guarantee replacement AND to
-    # guarantee inclusion in the next block.
-    local REPLACE_WEI
-    REPLACE_WEI=$(python3 -c "print(int(${BASE_FEE_WEI} * 3))")
-    local REPLACE_GWEI
-    REPLACE_GWEI=$(python3 -c "print(f'{${REPLACE_WEI}/1e9:.1f}')")
-
     echo "  Stuck pending tx at nonce ${STUCK}."
     echo "  Current baseFee: $(python3 -c "print(f'{${BASE_FEE_WEI}/1e9:.1f}')") gwei"
-    echo "  Replacing with 0-value self-transfer at ${REPLACE_GWEI} gwei..."
 
-    send_self_tx "${REPLACE_WEI}" "${STUCK}"
+    # We don't know the stuck tx's exact gas params (it could be legacy or
+    # EIP-1559, with an arbitrarily large maxFeePerGas buffer). Geth's
+    # replacement rule requires BOTH new gasTipCap and gasFeeCap to exceed
+    # the old values by >= 10%. Try progressively higher multipliers until
+    # replacement succeeds or we hit the ceiling.
+    local MULTIPLIERS=(3 10 30 100 300 1000)
+    local SUCCESS=0
+    for MULT in "${MULTIPLIERS[@]}"; do
+        local REPLACE_WEI
+        REPLACE_WEI=$(python3 -c "print(int(${BASE_FEE_WEI} * ${MULT}))")
+        local REPLACE_GWEI
+        REPLACE_GWEI=$(python3 -c "print(f'{${REPLACE_WEI}/1e9:.1f}')")
+
+        echo "  Trying replacement at ${REPLACE_GWEI} gwei (${MULT}x baseFee)..."
+        local ERR_LOG
+        ERR_LOG=$(mktemp)
+        if send_self_tx "${REPLACE_WEI}" "${STUCK}" 2> "${ERR_LOG}"; then
+            SUCCESS=1
+            rm -f "${ERR_LOG}"
+            break
+        fi
+
+        if grep -qi "underpriced" "${ERR_LOG}"; then
+            echo "    still underpriced, bumping further..."
+            rm -f "${ERR_LOG}"
+            continue
+        fi
+
+        # Different error - surface it and abort
+        echo "  Error during replacement:"
+        cat "${ERR_LOG}"
+        rm -f "${ERR_LOG}"
+        exit 1
+    done
+
+    if [ "${SUCCESS}" -ne 1 ]; then
+        echo "  Error: could not replace stuck tx even at 1000x baseFee."
+        echo "  The stuck tx has an unusually high maxFeePerGas."
+        echo "  You may need to wait or manually craft a replacement."
+        exit 1
+    fi
 
     # Confirm chain advanced
     local NEW_LATEST
     NEW_LATEST=$(get_nonce latest)
     if [ "${NEW_LATEST}" -le "${LATEST}" ]; then
-        echo "  Warning: replacement not yet mined. Waiting 5s and re-checking..."
+        echo "  Waiting for replacement to mine..."
         sleep 5
         NEW_LATEST=$(get_nonce latest)
     fi
 
     if [ "${NEW_LATEST}" -le "${LATEST}" ]; then
-        echo "  Error: stuck tx still not replaced. Inspect the chain manually."
+        echo "  Error: replacement accepted but not yet mined. Re-run the script."
         exit 1
     fi
 
