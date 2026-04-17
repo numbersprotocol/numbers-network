@@ -31,6 +31,12 @@ if [ "${NETWORK}" = "testnet" ]; then
     P_CHAIN_API="https://api.avax-test.network/ext/bc/P"
     P_CHAIN_ADDRESS="P-fuji1lcztar3x7ra0ajen3dtw4mdhk2cyshfhu2hzgk"
     FEE_RECIPIENT="0xE021c9B8DC3953f4f7f286C44a63f5fF001EF481"
+    # Direct validator endpoint that exposes ProposerVM JSON-RPC.
+    # The public testnetrpc.num.network gateway only routes EVM RPC and
+    # returns 404 on /ext/bc/.../proposervm, which breaks Avalanche CLI's
+    # initValidatorManager (it calls GetCurrentL1Epoch via ProposerVM).
+    # numbers-testnet-validator-a1 (archive node, public IP).
+    CLI_RPC_URL="${CLI_RPC_URL:-http://35.238.133.123:9650/ext/bc/${BLOCKCHAIN_ID}/rpc}"
 elif [ "${NETWORK}" = "mainnet" ]; then
     # Numbers Mainnet: Jade (玉)
     NETWORK_DISPLAY="Numbers Mainnet (Jade)"
@@ -47,6 +53,9 @@ elif [ "${NETWORK}" = "mainnet" ]; then
     P_CHAIN_API="https://api.avax.network/ext/bc/P"
     P_CHAIN_ADDRESS="P-avax142ue2exu7qxuawxe34ww8t623lv82tu2vt573g"
     FEE_RECIPIENT="0xe49a1220eE09Fbf0D25CA9e3BB8D5fD356Fc67FF"
+    # Direct validator endpoint for CLI's ProposerVM API calls.
+    # TODO: verify the appropriate mainnet validator IP before using.
+    CLI_RPC_URL="${CLI_RPC_URL:-}"
 else
     echo "Error: NETWORK must be 'testnet' or 'mainnet', got '${NETWORK}'"
     exit 1

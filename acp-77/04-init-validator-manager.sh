@@ -429,12 +429,29 @@ main() {
     echo ""
 
     # Run initValidatorManager
-    echo "Step: init_validator_manager"
-    echo "  Running: avalanche contract initValidatorManager ${CHAIN_NAME} ${AVALANCHE_NETWORK_FLAG}"
+    #
+    # IMPORTANT: the CLI calls GetCurrentL1Epoch which first tries ProposerVM
+    # Connect-RPC, then falls back to JSON-RPC at
+    # {rpc_host}/ext/bc/{blockchainID}/proposervm. Public RPC gateways
+    # typically do NOT expose proposervm routes and return 404, failing with
+    # "failure getting p-chain height: received status code: 404". Point the
+    # CLI at a direct validator endpoint (CLI_RPC_URL from env.sh) so the
+    # JSON-RPC fallback succeeds.
+    local CLI_RPC_FLAG=""
+    if [ -n "${CLI_RPC_URL}" ]; then
+        CLI_RPC_FLAG="--rpc ${CLI_RPC_URL}"
+        echo "Step: init_validator_manager"
+        echo "  Using CLI RPC endpoint: ${CLI_RPC_URL}"
+        echo "  (public RPC does not expose ProposerVM JSON-RPC; validator direct does)"
+    else
+        echo "Step: init_validator_manager"
+        echo "  Using default RPC (from sidecar)"
+    fi
+    echo "  Running: avalanche contract initValidatorManager ${CHAIN_NAME} ${AVALANCHE_NETWORK_FLAG} ${CLI_RPC_FLAG}"
     echo ""
 
     local INIT_EXIT_CODE=0
-    avalanche contract initValidatorManager "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG} || INIT_EXIT_CODE=$?
+    avalanche contract initValidatorManager "${CHAIN_NAME}" ${AVALANCHE_NETWORK_FLAG} ${CLI_RPC_FLAG} || INIT_EXIT_CODE=$?
 
     echo ""
 
